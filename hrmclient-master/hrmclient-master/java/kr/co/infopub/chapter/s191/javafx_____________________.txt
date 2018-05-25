@@ -1,0 +1,8 @@
+
+
+kr.co.infopub.chapter.s191.Main
+을 실행시키면 
+2 2tier HRM이 실행된다.
+
+그림 s191_2tier.tif 참조
+ 

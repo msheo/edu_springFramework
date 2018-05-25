@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800" prefWidth="1200.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+     <bottom>
+        <Pane prefHeight="35.0" prefWidth="1194.0" BorderPane.alignment="CENTER">
+           <children>
+           <Label fx:id="lbhello" layoutX="312.0" layoutY="8.0" prefHeight="19.0" prefWidth="871.0" />
+           <Button fx:id="searchEmpsBtn" layoutX="-6.0" layoutY="3.0" mnemonicParsing="false" onAction="#searchEmployees" prefHeight="29.0" prefWidth="305.0" text="Search All Employees" />
+           </children>
+        </Pane>
+     </bottom>
+     <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <center>
+              <TableView fx:id="employeeTable" editable="true" prefHeight="676.0" prefWidth="870.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                <columns>
+                    <TableColumn fx:id="empIdColumn" prefWidth="100" text="EmployeeID" />
+                  <TableColumn fx:id="empNameColumn" prefWidth="125" text="FirstName" />
+                  <TableColumn fx:id="empLastNameColumn" prefWidth="125" text="LastName" />
+                    <TableColumn fx:id="empEmailColumn" prefWidth="200" text="Email" />
+                    <TableColumn fx:id="empPhoneNumberColumn" prefWidth="200" text="Phone" />
+                    <TableColumn fx:id="empHireDateColumn" prefWidth="180" text="Hire Date" />
+                </columns>
+              </TableView>
+           </center>
+        </BorderPane>
+     </center>
+     <left>
+      <TreeView fx:id="tvEmp" prefHeight="700.0" prefWidth="300.0" BorderPane.alignment="CENTER" />
+     </left>
+  </fx:root>

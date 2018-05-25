@@ -1,0 +1,6 @@
+클라이언트단
+
+executable jar
+Main
+
+java -jar hrmclient.jar

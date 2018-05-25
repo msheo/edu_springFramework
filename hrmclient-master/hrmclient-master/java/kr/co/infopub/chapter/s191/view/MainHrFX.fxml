@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850" 
+prefWidth="1200" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="kr.co.infopub.chapter.s191.MainHrFXController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="파일">
+            <items>
+            <MenuItem mnemonicParsing="false" onAction="#onStartAction" text="HR 시작" />
+              <MenuItem mnemonicParsing="false" onAction="#onExitAction" text="HR 끝" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="작업탭선택">
+            <items>
+              <MenuItem fx:id="menuDepart" mnemonicParsing="false" onAction="#onMenuction" text="부서 보기" />
+              <MenuItem fx:id="menuManage" mnemonicParsing="false" onAction="#onMenuction" text="관리자 보기" />
+              <MenuItem fx:id="menuSearch" mnemonicParsing="false" onAction="#onMenuction" text="찾기 및 추가" />
+              <MenuItem fx:id="menuUpdate" mnemonicParsing="false" onAction="#onMenuction" text="수정하기" />
+              <MenuItem fx:id="menuChart" mnemonicParsing="false" onAction="#onMenuction" text="부서차트보기" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="도움">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onHelpAction" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+     <center>
+      <TabPane fx:id="mainTabPane" prefHeight="800.0" prefWidth="1100.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+        <tabs>
+          <Tab fx:id="tab1" text="부서(부서별인원)">
+               <content>
+                  <BorderPane fx:id="debTabBorder" prefHeight="543.0" prefWidth="1000.0" />
+               </content>
+          </Tab>
+          <Tab fx:id="tab2" text="직원과 관리자">
+          <content>
+                  <BorderPane fx:id="empTabBorder" prefHeight="543.0" prefWidth="1100.0" />
+                   
+               </content>
+          </Tab>
+           <Tab fx:id="tab3" text="직원찾기/추가">
+          <content>
+                  <BorderPane fx:id="searchTabBorder" prefHeight="543.0" prefWidth="1100.0" />
+               </content>
+          </Tab>
+          <Tab fx:id="tab4" text="직원정보수정">
+          <content>
+                  <BorderPane fx:id="updateTabBorder" prefHeight="543.0" prefWidth="1100.0" />
+               </content>
+          </Tab>
+           <Tab fx:id="tab5" text="부서통계(파이)">
+          <content>
+                  <BorderPane fx:id="depChartBorder" prefHeight="543.0" prefWidth="1100.0" />
+                 
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>

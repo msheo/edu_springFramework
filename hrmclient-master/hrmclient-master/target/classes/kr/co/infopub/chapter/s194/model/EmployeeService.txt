@@ -1,0 +1,102 @@
+001: package kr.co.infopub.chapter.s194.model;
+002: import java.sql.SQLException;
+003: import java.util.List;
+004: import javafx.collections.ObservableList;
+005: import kr.co.infopub.chapter.s194.dto.DepConvert;
+006: import kr.co.infopub.chapter.s194.dto.DepCount;
+007: import kr.co.infopub.chapter.s194.dto.DepCountConvert;
+008: import kr.co.infopub.chapter.s194.dto.DepCountDto;
+009: import kr.co.infopub.chapter.s194.dto.Department;
+010: import kr.co.infopub.chapter.s194.dto.DepartmentDto;
+011: import kr.co.infopub.chapter.s194.dto.EmpConvert;
+012: import kr.co.infopub.chapter.s194.dto.EmployeeDto;
+013: import kr.co.infopub.chapter.s194.dto.Employee;
+014: public class EmployeeService {
+015:  private static EmployeeService employeeService;
+016:  private EmployeeRestJsonDao employeeDAO;
+017:  private EmployeeService() {
+018: 	employeeDAO=new EmployeeRestJsonDao();
+019:  }
+020:  public static EmployeeService getInstance(){
+021: 	if(employeeService==null){
+022: 		employeeService=new EmployeeService();
+023: 	}
+024: 	return employeeService;
+025:  }
+026:  // List<DepartmentDto> -> ObservableList<Department>
+027:  public ObservableList<Department> findAllDepartments()
+028: 		                                    throws SQLException{
+029: 	List<DepartmentDto> blist=employeeDAO.findAllDepartments();
+030: 	return DepConvert.toObservProFromDto(blist);
+031:  }
+032:  // List<EmployeeDto> -> ObservableList<Employee>
+033:  public ObservableList<Employee> findAllEmployees() 
+034: 		                                        throws SQLException{
+035: 	List<EmployeeDto> blist  = employeeDAO.findAllEmployees ();
+036: 	return EmpConvert.toObservProFromDto(blist);
+037:  }
+038:  // List<EmployeeDto> -> ObservableList<Employee>
+039:  public ObservableList<Employee> findTreeManagerInEmployee() 
+040: 		                                       throws SQLException{
+041: 	 List<EmployeeDto> bdlists= employeeDAO.findTreeManagerInEmployee();
+042: 	 return EmpConvert.toObservProFromDto(bdlists);
+043:  }
+044: 
+045: 
+046: 	public ObservableList<Employee> findEmployeesByDepartName(String val) throws SQLException{
+047: 		 List<EmployeeDto> emplists=employeeDAO.findEmployeesByDepartName( val);
+048: 		 return EmpConvert.toObservProFromDto(emplists);
+049: 	}
+050: 	public int getTreeMaxLevel() throws SQLException{
+051: 		return  employeeDAO.getTreeMaxLevel();
+052: 	}
+053: 
+054: 	public ObservableList<Employee> findEmployeesByEmpId(String val) throws SQLException{
+055: 		List<EmployeeDto> elists=employeeDAO.findEmployeesByEmpId(val);//100
+056: 		return EmpConvert.toObservProFromDto(elists);
+057: 	}
+058: 
+059: 	public Employee findEmployeeById(String string) throws SQLException{
+060: 		EmployeeDto edto =employeeDAO.findEmployeeById(string);
+061: 		return EmpConvert.toPro(edto);
+062: 	}
+063: 
+064: 	public ObservableList<Employee> findManagersByName(String searchname) throws SQLException{
+065: 		 List<EmployeeDto> elists=employeeDAO.findManagersByName(searchname);
+066: 		return EmpConvert.toObservProFromDto(elists);
+067: 	}
+068: 
+069: 	public ObservableList<String> findAllJobs() throws SQLException{
+070: 	    List<String> jlists=employeeDAO.findAllJobs();
+071: 		return EmpConvert.strList(jlists);
+072: 	}
+073: 
+074: 	public ObservableList<Department> findAllDepartments2() throws SQLException{
+075:         List<DepartmentDto> edeps=employeeDAO.findAllDepartments2 ();
+076: 		return DepConvert.toObservProFromDto(edeps);
+077: 	}
+078: 
+079: 	public int addEmployee(EmployeeDto empdto) throws SQLException{
+080: 		return employeeDAO.addEmployee(empdto);
+081: 	}
+082: 
+083: 	public boolean updateEmployee(Employee emp) throws SQLException{
+084: 		EmployeeDto edot=EmpConvert.toDto(emp);
+085: 		return employeeDAO.updateEmployee(edot);
+086: 	}
+087: 
+088: 	public boolean deleteEmployee(Employee emp) throws SQLException{
+089: 		EmployeeDto edot=EmpConvert.toDto(emp);
+090: 		return employeeDAO.deleteEmployee(edot);
+091: 	}
+092: 
+093: 	public ObservableList<DepCount> findAllDepCounts() throws SQLException{
+094:  	    List<DepCountDto> deplist = employeeDAO.findAllDepCounts();
+095: 	    return DepCountConvert.toObservProFromDto(deplist);
+096: 	}
+097: 
+098: 	public int getEmployeesTotal() throws SQLException{
+099: 		return employeeDAO.getEmployeesTotal();
+100: 	}
+101: 	
+102: }

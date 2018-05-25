@@ -1,0 +1,509 @@
+001: package kr.co.infopub.chapter.s194.model;
+002: import java.sql.SQLException;
+003: import java.util.ArrayList;
+004: import java.util.LinkedHashMap;
+005: import java.util.List;
+006: import org.springframework.web.client.RestTemplate;
+007: import kr.co.infopub.chapter.s194.dto.DepCountDto;
+008: import kr.co.infopub.chapter.s194.dto.DepartmentDto;
+009: import kr.co.infopub.chapter.s194.dto.EmployeeDto;
+010: import kr.co.infopub.chapter.s194.help.BoolResult;
+011: import kr.co.infopub.chapter.s194.help.NumberResult;
+012: public class EmployeeRestJsonDao {
+013:  public static final String REST_SERVICE_URI = "http://localhost:8199/humans/api";
+014:  // Object -> String -> int
+015:  public static int tI(Object obj){
+016: 	if(obj==null){ return 0;
+017: 	}else {
+018: 		return Integer.parseInt(obj.toString());
+019: 	}
+020:  }
+021:  // Object -> String -> double
+022:  public static double td(Object obj){
+023: 	if(obj==null){ return 0.0;
+024: 	}else {
+025: 		return Double.parseDouble(obj.toString());
+026: 	}
+027:  }
+028:  //Object -> String
+029:  public static String ts(Object obj){
+030: 	if(obj==null){ return "";
+031: 	}else {
+032: 		return (String)obj;
+033: 	}
+034:  }
+035:  //String -> java.sql.Date
+036:  public static java.sql.Date tq(String obj){
+037: 	if(obj==null || obj.equals("")){ 
+038: 		return new java.sql.Date(new java.util.Date().getTime());
+039: 	}else {
+040: 		return java.sql.Date.valueOf(obj);
+041: 	}
+042:  }
+043:  // 공백 -> %20
+044:  public static String to__(String v){
+045: 	return v.replaceAll(" ", "%20");
+046:  }
+047:  // %20 -> 공백
+048:  public static String __to(String v){
+049: 	return v.replaceAll("%20", " ");
+050:  }
+051:  // http://localhost:8199/humans/api/findAllEmployees
+052:  // Restful JSON -> List<LinkedHashMap<String, Object>> 
+053:  //              -> List<EmployeeDto>
+054:  public List<EmployeeDto> findAllEmployees() throws SQLException{
+055: 	System.out.println("Testing findAllEmployees API-----------");
+056: 	RestTemplate restTemplate = new RestTemplate();
+057:     List<LinkedHashMap<String, Object>> usersMap = 
+058:       restTemplate.getForObject(REST_SERVICE_URI+"/findAllEmployees", 
+059:     		                                           List.class);
+060:     List<EmployeeDto> lists=new ArrayList<>();  
+061:     if(usersMap!=null){
+062:         for(LinkedHashMap<String, Object> map : usersMap){
+063:         	EmployeeDto dto=new EmployeeDto();
+064:         	dto.setEmail(ts(map.get("email")));
+065:         	dto.setSalary(td(map.get("salary")));
+066:         	dto.setFirstName(ts(map.get("firstName")));
+067:         	dto.setPhoneNumber(ts(map.get("phoneNumber")));
+068:         	dto.setHireDate(tq(ts(map.get("hireDate"))));
+069:         	dto.setJobId(ts(map.get("jobId")));
+070:         	dto.setEmployeeId(tI(map.get("employeeId")));
+071:         	dto.setLastName(ts(map.get("lastName")));
+072:         	dto.setManagerId(tI(map.get("managerId")));
+073:         	dto.setCommissionPct(td(map.get("commissionPct")));
+074:         	dto.setDepartmantId(tI(map.get("departmantId")));
+075:         	lists.add(dto);
+076:         }
+077:     }else{
+078:         System.out.println("No findAllEmployees exist----------");
+079:     }
+080:     return lists;
+081:  }
+082:  // http://localhost:8199/humans/api/findAllDepartments
+083:  // Restful JSON -> List<LinkedHashMap<String, Object>> 
+084:  //              -> List<DepartmentDto>
+085:  public List<DepartmentDto> findAllDepartments () throws SQLException{
+086: 	System.out.println("Testing findAllDepartments API-----------");
+087: 	RestTemplate restTemplate = new RestTemplate();
+088:     List<LinkedHashMap<String, Object>> usersMap = 
+089:       restTemplate.getForObject(REST_SERVICE_URI+"/findAllDepartments",
+090:     		                                              List.class);
+091:     List<DepartmentDto> lists=new ArrayList<>();  
+092:     if(usersMap!=null){
+093:         for(LinkedHashMap<String, Object> map : usersMap){
+094:         	DepartmentDto dto=new DepartmentDto();
+095:         	dto.setDepartment_id(tI(map.get("department_id")));
+096:         	dto.setDepartment_name(ts(map.get("department_name")));
+097:         	dto.setManager_id(tI(map.get("manager_id")));
+098:         	dto.setLocation_id(tI(map.get("location_id")));
+099:         	lists.add(dto);
+100:         }
+101:     }else{
+102:         System.out.println("No findAllDepartments exist----------");
+103:     }
+104:     return lists;
+105:  }
+106:  // http://localhost:8199/humans/api/findTreeManagerInEmployee
+107:  // Restful JSON -> List<LinkedHashMap<String, Object>> 
+108:  //              -> List<EmployeeDto>
+109:  public  List<EmployeeDto> findTreeManagerInEmployee () throws SQLException{
+110: 	System.out.println("Testing findTreeManagerInEmployee API-----------");
+111: 	RestTemplate restTemplate = new RestTemplate();
+112:     List<LinkedHashMap<String, Object>> usersMap = 
+113:       restTemplate.getForObject(REST_SERVICE_URI+"/findTreeManagerInEmployee", 
+114:     				                                          List.class);
+115:     List<EmployeeDto> lists=new ArrayList<>();  
+116:     if(usersMap!=null){
+117:         for(LinkedHashMap<String, Object> map : usersMap){
+118:         	EmployeeDto dto=new EmployeeDto();
+119:         	dto.setFirstName(ts(map.get("firstName")));
+120:         	dto.setEmployeeId(tI(map.get("employeeId")));
+121:         	dto.setLastName(ts(map.get("lastName")));
+122:         	dto.setManagerId(tI(map.get("managerId")));
+123:         	dto.setDepartmantId(tI(map.get("departmantId")));
+124:         	dto.setOrder2(ts(map.get("order2")));
+125:         	lists.add(dto);
+126:         }
+127:     }else{
+128:         System.out.println("No findTreeManagerInEmployee exist----------");
+129:     }
+130:     return lists;
+131:  }
+132:  
+133:  
+134: 	public List<EmployeeDto> findEmployeesByDepartName(String department_name)throws SQLException{
+135: 		System.out.println("Testing findEmployeesByDepartName API-----------");
+136: 		RestTemplate restTemplate = new RestTemplate();
+137:         List<LinkedHashMap<String, Object>> usersMap = restTemplate.getForObject(
+138:         		REST_SERVICE_URI+"/findEmployeesByDepartName/"+to__(department_name), List.class);
+139:         List<EmployeeDto> lists=new ArrayList<>();  
+140:         if(usersMap!=null){
+141:             for(LinkedHashMap<String, Object> map : usersMap){
+142:             	EmployeeDto dto=new EmployeeDto();
+143:             	dto.setEmail(ts(map.get("email")));
+144:             	dto.setSalary(td(map.get("salary")));
+145:             	dto.setFirstName(ts(map.get("firstName")));
+146:             	dto.setPhoneNumber(ts(map.get("phoneNumber")));
+147:             	dto.setHireDate(tq(ts(map.get("hireDate"))));
+148:             	dto.setJobId(ts(map.get("jobId")));
+149:             	dto.setEmployeeId(tI(map.get("employeeId")));
+150:             	dto.setLastName(ts(map.get("lastName")));
+151:             	dto.setManagerId(tI(map.get("managerId")));
+152:             	dto.setCommissionPct(td(map.get("commissionPct")));
+153:             	dto.setDepartmantId(tI(map.get("departmantId")));
+154:             	//System.out.println(dto);
+155:             	lists.add(dto);
+156:             }
+157:         }else{
+158:             System.out.println("No findEmployeesByDepartName exist----------");
+159:         }
+160:         return lists;
+161: 	}
+162: 	public int getEmployeesTotal()throws SQLException{
+163: 		System.out.println("Testing getUser API----------");
+164:         RestTemplate restTemplate = new RestTemplate();
+165:         NumberResult nresult = restTemplate.getForObject(REST_SERVICE_URI+"/getEmployeesTotal", NumberResult.class);
+166:         if(nresult.getState().equals("succ")){
+167:         	return nresult.getCount();
+168:         }else{
+169:         	return 0;
+170:         }
+171: 	}
+172: 	public List<DepartmentDto> findAllDepartments2()throws SQLException{
+173: 		System.out.println("Testing findAllDepartments2 API-----------");
+174: 		RestTemplate restTemplate = new RestTemplate();
+175:         List<LinkedHashMap<String, Object>> usersMap = 
+176:         		restTemplate.getForObject(REST_SERVICE_URI+"/findAllDepartments2", List.class);
+177:         List<DepartmentDto> lists=new ArrayList<>();  
+178:         if(usersMap!=null){
+179:             for(LinkedHashMap<String, Object> map : usersMap){
+180:             	DepartmentDto dto=new DepartmentDto();
+181:             	dto.setDepartment_id(tI(map.get("department_id")));
+182:             	dto.setDepartment_name(ts(map.get("department_name")));
+183:             	dto.setManager_id(tI(map.get("manager_id")));
+184:             	dto.setLocation_id(tI(map.get("location_id")));
+185:             	//System.out.println(dto);
+186:             	lists.add(dto);
+187:             }
+188:         }else{
+189:             System.out.println("No findAllDepartments2 exist----------");
+190:         }
+191:         return lists;
+192: 	}
+193: 	public List<DepCountDto> findAllDepCounts() throws SQLException{
+194: 		System.out.println("Testing findAllDepCounts API-----------");
+195: 		RestTemplate restTemplate = new RestTemplate();
+196:         List<LinkedHashMap<String, Object>> usersMap = 
+197:         		restTemplate.getForObject(REST_SERVICE_URI+"/findAllDepCounts", List.class);
+198:         List<DepCountDto> lists=new ArrayList<>();  
+199:         if(usersMap!=null){
+200:             for(LinkedHashMap<String, Object> map : usersMap){
+201:             	DepCountDto dto=new DepCountDto();
+202:             	dto.setDepartment_id(tI(map.get("department_id")));
+203:             	dto.setDepartment_name(ts(map.get("department_name")));
+204:             	dto.setCount(tI(map.get("count")));
+205:             	//System.out.println(dto);
+206:             	lists.add(dto);
+207:             }
+208:         }else{
+209:             System.out.println("No findAllDepCounts exist----------");
+210:         }
+211:         return lists;
+212: 	}
+213: 	public  List<String> findAllJobs ()throws SQLException{
+214: 		System.out.println("Testing findAllJobs API-----------");
+215: 		RestTemplate restTemplate = new RestTemplate();
+216:         List<Object> usersMap = 
+217:         		restTemplate.getForObject(REST_SERVICE_URI+"/findAllJobs", List.class);
+218:         List<String> lists=new ArrayList<>();  
+219:         if(usersMap!=null){
+220:             for(Object dto : usersMap){
+221:                 lists.add((String)dto);
+222:             }
+223:         }else{
+224:             System.out.println("No findAllDepCounts exist----------");
+225:         }
+226:         return lists;
+227: 	}
+228: 
+229: 
+230: 
+231: 	public  List<EmployeeDto> findEmployeesByManagerId (String managerId) throws SQLException{
+232: 		System.out.println("Testing findEmployeesByManagerId API-----------");
+233: 		RestTemplate restTemplate = new RestTemplate();
+234:         List<LinkedHashMap<String, Object>> usersMap = restTemplate.getForObject(REST_SERVICE_URI+"/findEmployeesByManagerId/"+managerId, List.class);
+235:         List<EmployeeDto> lists=new ArrayList<>();  
+236:         if(usersMap!=null){
+237:             for(LinkedHashMap<String, Object> map : usersMap){
+238:             	EmployeeDto dto=new EmployeeDto();
+239:             	dto.setEmail(ts(map.get("email")));
+240:             	dto.setSalary(td(map.get("salary")));
+241:             	dto.setFirstName(ts(map.get("firstName")));
+242:             	dto.setPhoneNumber(ts(map.get("phoneNumber")));
+243:             	dto.setHireDate(tq(ts(map.get("hireDate"))));
+244:             	dto.setJobId(ts(map.get("jobId")));
+245:             	dto.setEmployeeId(tI(map.get("employeeId")));
+246:             	dto.setLastName(ts(map.get("lastName")));
+247:             	dto.setManagerId(tI(map.get("managerId")));
+248:             	dto.setCommissionPct(td(map.get("commissionPct")));
+249:             	dto.setDepartmantId(tI(map.get("departmantId")));
+250:             	//System.out.println(dto);
+251:             	lists.add(dto);
+252:             }
+253:         }else{
+254:             System.out.println("No findEmployeesByManagerId exist----------");
+255:         }
+256:         return lists;
+257: 	}
+258: 	
+259: 	public  List<EmployeeDto> findEmployeesByEmpId (String employeeId) throws SQLException{
+260: 		System.out.println("Testing findEmployeesByEmpId API-----------");
+261: 		RestTemplate restTemplate = new RestTemplate();
+262:         List<LinkedHashMap<String, Object>> usersMap = restTemplate.getForObject(REST_SERVICE_URI+"/findEmployeesByEmpId/"+employeeId, List.class);
+263:         List<EmployeeDto> lists=new ArrayList<>();  
+264:         if(usersMap!=null){
+265:             for(LinkedHashMap<String, Object> map : usersMap){
+266:             	EmployeeDto dto=new EmployeeDto();
+267:             	dto.setEmail(ts(map.get("email")));
+268:             	dto.setSalary(td(map.get("salary")));
+269:             	dto.setFirstName(ts(map.get("firstName")));
+270:             	dto.setPhoneNumber(ts(map.get("phoneNumber")));
+271:             	dto.setHireDate(tq(ts(map.get("hireDate"))));
+272:             	dto.setJobId(ts(map.get("jobId")));
+273:             	dto.setEmployeeId(tI(map.get("employeeId")));
+274:             	dto.setLastName(ts(map.get("lastName")));
+275:             	dto.setManagerId(tI(map.get("managerId")));
+276:             	dto.setCommissionPct(td(map.get("commissionPct")));
+277:             	dto.setDepartmantId(tI(map.get("departmantId")));
+278:             	//dto.setOrder2(ts(map.get("order2")));
+279:             	lists.add(dto);
+280:             }
+281:         }else{
+282:             System.out.println("No findEmployeesByEmpId exist----------");
+283:         }
+284:         return lists;
+285: 	}
+286: 	public  EmployeeDto findEmployeeById (String employeeId)throws SQLException{
+287: 		System.out.println("Testing getUser API----------");
+288:         RestTemplate restTemplate = new RestTemplate();
+289:         EmployeeDto nresult = restTemplate.getForObject(REST_SERVICE_URI+"/findEmployeeById/"+employeeId, EmployeeDto.class);
+290:         return nresult;
+291: 	}
+292: 	
+293: 	public  List<EmployeeDto> findManagersByName(String name)throws SQLException{
+294: 		System.out.println("Testing findManagersByName API-----------");
+295: 		RestTemplate restTemplate = new RestTemplate();
+296: 		List<LinkedHashMap<String, Object>> usersMap=null;
+297: 		if(name==null || name.trim().equals("")){
+298: 			usersMap = restTemplate.getForObject(REST_SERVICE_URI+"/findAllEmployees", List.class);
+299: 		}else{
+300: 			usersMap = restTemplate.getForObject(REST_SERVICE_URI+"/findManagersByName/"+__to(name), List.class);
+301: 		}
+302:         List<EmployeeDto> lists=new ArrayList<>();  
+303:         if(usersMap!=null){
+304:             for(LinkedHashMap<String, Object> map : usersMap){
+305:             	EmployeeDto dto=new EmployeeDto();
+306:             	dto.setEmail(ts(map.get("email")));
+307:             	dto.setSalary(td(map.get("salary")));
+308:             	dto.setFirstName(ts(map.get("firstName")));
+309:             	dto.setPhoneNumber(ts(map.get("phoneNumber")));
+310:             	dto.setHireDate(tq(ts(map.get("hireDate"))));
+311:             	dto.setJobId(ts(map.get("jobId")));
+312:             	dto.setEmployeeId(tI(map.get("employeeId")));
+313:             	dto.setLastName(ts(map.get("lastName")));
+314:             	dto.setManagerId(tI(map.get("managerId")));
+315:             	dto.setCommissionPct(td(map.get("commissionPct")));
+316:             	dto.setDepartmantId(tI(map.get("departmantId")));
+317:             	//dto.setOrder2(ts(map.get("order2")));
+318:             	lists.add(dto);
+319:             }
+320:         }else{
+321:             System.out.println("No findManagersByName exist----------");
+322:         }
+323:         return lists;
+324: 	}
+325: 	public int getTreeMaxLevel()throws SQLException{
+326: 		System.out.println("Testing getTreeMaxLevel API----------");
+327:         RestTemplate restTemplate = new RestTemplate();
+328:         NumberResult nresult = restTemplate.getForObject(REST_SERVICE_URI+"/getTreeMaxLevel", NumberResult.class);
+329:         if(nresult.getState().equals("succ")){
+330:         	return nresult.getCount();
+331:         }else{
+332:         	return 0;
+333:         }
+334: 	}
+335: 	
+336: 	public  int addEmployee (EmployeeDto emp)throws SQLException{
+337: 		System.out.println("Testing addEmployee  API----------");
+338:         RestTemplate restTemplate = new RestTemplate();
+339:         NumberResult nresult = restTemplate.postForObject(REST_SERVICE_URI+"/addEmployee", emp, NumberResult.class);
+340:         //System.out.println("Location : "+uri.toASCIIString());
+341:         if(nresult.getState().equals("succ")){
+342:         	return nresult.getCount();
+343:         }else{
+344:         	return 0;
+345:         }
+346: 	}
+347: 	//put???
+348: 	public  boolean updateEmployee(EmployeeDto emp)throws SQLException{
+349: 		System.out.println("Testing updateEmployee  API----------");
+350:         RestTemplate restTemplate = new RestTemplate();
+351:         BoolResult nresult = restTemplate.postForObject(REST_SERVICE_URI+"/updateEmployee", emp, BoolResult.class);
+352:         //System.out.println("Location : "+uri.toASCIIString());
+353:         if(nresult.getState().equals("succ")){
+354:         	return nresult.isCount();
+355:         }else{
+356:         	return false;
+357:         }
+358: 	}
+359: 	public  boolean updateJobHistory(EmployeeDto emp)throws SQLException{
+360: 		System.out.println("Testing updateJobHistory  API----------");
+361:         RestTemplate restTemplate = new RestTemplate();
+362:         
+363:         BoolResult nresult = restTemplate.postForObject(REST_SERVICE_URI+"/updateJobHistory", emp, BoolResult.class);
+364:         //System.out.println("Location : "+uri.toASCIIString());
+365:         if(nresult.getState().equals("succ")){
+366:         	return nresult.isCount();
+367:         }else{
+368:         	return false;
+369:         }
+370: 	}
+371: 	
+372: 	public  boolean deleteEmployee(EmployeeDto emp)throws SQLException{
+373: 		System.out.println("Testing deleteEmployee  API----------");
+374: /*      RestTemplate restTemplate = new RestTemplate();
+375:         restTemplate.delete(REST_SERVICE_URI+"/deleteEmployee/"+employeeId);
+376:         return true;*/
+377: 		RestTemplate restTemplate = new RestTemplate();
+378:         BoolResult nresult = restTemplate.postForObject(REST_SERVICE_URI+"/deleteEmployee/"+emp.getEmployeeId(), null  ,BoolResult.class);
+379:         //System.out.println("Location : "+uri.toASCIIString());
+380:         if(nresult.getState().equals("succ")){
+381:         	return nresult.isCount();
+382:         }else{
+383:         	return false;
+384:         }
+385: 	}
+386: 	
+387: 	public static void main(String[] args) {
+388: 		EmployeeRestJsonDao jdao=new EmployeeRestJsonDao();
+389: 		try {
+390: 			// 1) 
+391: 			List<EmployeeDto> femps=jdao.findAllEmployees()  ;
+392: 			for(EmployeeDto femp: femps){
+393: 				System.out.println(femp);
+394: 			}
+395: 			System.out.println( "Size ---------------->"+femps.size());
+396: 			// 2)
+397: /*			List<DepartmentDto> femps=jdao.findAllDepartments()  ;
+398: 			for(DepartmentDto femp: femps){
+399: 				System.out.println(femp);
+400: 			}
+401: 			System.out.println( "Size ---------------->"+femps.size());*/
+402: 			// 3)
+403: /*			List<EmployeeDto> femps=jdao.findEmployeesByDepartName("Human Resources")  ;
+404: 			for(EmployeeDto femp: femps){
+405: 				System.out.println(femp);
+406: 			}
+407: 			System.out.println( "Size ---------------->"+femps.size());
+408: */			
+409: 			// 4)
+410: /*			int count= jdao.getEmployeesTotal();
+411: 			System.out.println( "getEmployeesTotal ---------------->"+count);*/
+412: 			// 5) 
+413: /*			List<DepartmentDto> femps=jdao.findAllDepartments2()  ;
+414: 			for(DepartmentDto femp: femps){
+415: 				System.out.println(femp);
+416: 			}
+417: 			System.out.println( "Size ---------------->"+femps.size());*/
+418: 			
+419: 			// 6) 
+420: /*			List<DepCountDto> femps=jdao.findAllDepCounts()  ;
+421: 			for(DepCountDto femp: femps){
+422: 				System.out.println(femp);
+423: 			}
+424: 			System.out.println( "Size ---------------->"+femps.size());*/
+425: 			
+426: 			// 7)
+427: /*			List<String> femps=jdao.findAllJobs ();
+428: 			for(String femp: femps){
+429: 				System.out.println(femp);
+430: 			}
+431: 			System.out.println( "Size ---------------->"+femps.size());*/
+432: 			
+433: 			// 8) 
+434: /*			List<EmployeeDto> femps=jdao.findTreeManagerInEmployee()  ;
+435: 			for(EmployeeDto femp: femps){
+436: 				System.out.println(femp.getOrder2());
+437: 			}
+438: 			System.out.println( "Size ---------------->"+femps.size());*/
+439: 			
+440: 			// 9) findEmployeesByManagerId/100
+441: /*			List<EmployeeDto> femps=jdao.findEmployeesByManagerId("100")  ;
+442: 			for(EmployeeDto femp: femps){
+443: 				System.out.println(femp);
+444: 			}
+445: 			System.out.println( "Size ---------------->"+femps.size());*/
+446: 			
+447: 			// 10) List<EmployeeDto> findEmployeesByEmpId (String employeeId)
+448: /*			List<EmployeeDto> femps=jdao.findEmployeesByEmpId("101")  ;
+449: 			for(EmployeeDto femp: femps){
+450: 				System.out.println(femp);
+451: 			}
+452: 			System.out.println( "Size ---------------->"+femps.size());*/
+453: 			
+454: 			// 11) EmployeeDto findEmployeeById (String employeeId)
+455: /*			EmployeeDto dto=jdao.findEmployeeById ("101");
+456: 			System.out.println( dto);*/
+457: 			
+458: 			// 12) findManagersByName(String name)
+459: /*			List<EmployeeDto> femps=jdao.findManagersByName("king")  ;
+460: 			for(EmployeeDto femp: femps){
+461: 				System.out.println(femp);
+462: 			}
+463: 			System.out.println( "Size ---------------->"+femps.size());*/
+464: 			
+465: 			// 13) 	public  int getTreeMaxLevel ()throws Exception;
+466: /*			int count= jdao.getTreeMaxLevel();
+467: 			System.out.println( "getTreeMaxLevel ---------------->"+count);*/
+468: 			
+469: 			// 14) int addEmployee (EmployeeDto emp)
+470: /*			EmployeeDto dto=new EmployeeDto();
+471: 			dto.setCommissionPct(0.0);
+472: 			dto.setDepartmantId(60);
+473: 			dto.setEmail("Jongu");
+474: 			dto.setFirstName("Jongu");
+475: 			dto.setLastName("Lee");
+476: 			dto.setHireDate(java.sql.Date.valueOf("2016-05-04"));
+477: 			dto.setJobId("AD_PRES");
+478: 			dto.setManagerId(101);
+479: 			dto.setSalary(3456.78);
+480: 			dto.setPhoneNumber("010.6789.7890");
+481: 			int count= jdao.addEmployee(dto);
+482: 			System.out.println( "addEmployee ---------------->"+count);*/
+483: 			
+484: 			// 15) 
+485: /*			EmployeeDto dto=new EmployeeDto();
+486: 			dto.setEmployeeId(361);
+487: 			dto.setCommissionPct(0.0);
+488: 			dto.setDepartmantId(70);
+489: 			dto.setEmail("Jongu");
+490: 			dto.setFirstName("Jongu");
+491: 			dto.setLastName("Lee");
+492: 			dto.setHireDate(java.sql.Date.valueOf("2016-05-04"));
+493: 			dto.setJobId("SA_MAN");
+494: 			dto.setManagerId(204);
+495: 			dto.setSalary(3456.78);
+496: 			dto.setPhoneNumber("010.6789.7890");
+497: 			boolean count= jdao.updateEmployee(dto);
+498: 			System.out.println( "updateEmployee ---------------->"+count);*/
+499: 			
+500: 			// 16) delete  
+501: /*			boolean count= jdao.deleteEmployee("360");
+502: 			System.out.println( "deleteEmployee ---------------->"+count);*/
+503: 		} catch (SQLException e) {
+504: 			System.out.println(e);
+505: 		}
+506: 	}
+507: 	
+508: 	
+509: }

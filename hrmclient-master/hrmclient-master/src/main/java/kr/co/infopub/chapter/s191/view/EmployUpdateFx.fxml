@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+ prefHeight="800.0" prefWidth="1200.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" 
+ xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <SplitPane fx:id="leftsplit" dividerPositions="0.9837092731829574" orientation="VERTICAL" prefHeight="657.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <SplitPane dividerPositions="0.34698996655518394" layoutX="264.0" layoutY="123.0" prefHeight="700.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="635.0" prefWidth="411.0" SplitPane.resizableWithParent="false">
+                      <children>
+               <VBox layoutX="211.0" layoutY="47.0" prefHeight="447.0" prefWidth="281.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="30.0">
+                  <children>
+                     <TextField fx:id="tfempid" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="아이디는 자동으로 생성됩니다.">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                     <TextField fx:id="tffirstname" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="이름을 입력하세요">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                      <TextField fx:id="tflastname" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="성을 입력하세요">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                      <TextField fx:id="tfemail" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="이메일을 입력하세요">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                      <TextField fx:id="tfphone" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="전화번호를 입력하세요.">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                              <DatePicker fx:id="tfhiredate" editable="false" prefHeight="29.0" prefWidth="381.0" promptText="고용일을 선택하세요">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </DatePicker>
+                         <TextField fx:id="tfjobid" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="잡아이디를 선택하세요">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                      <TextField fx:id="tfsalary" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="월급을 입력하세요">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                      <TextField fx:id="tfcommis" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="커미션을 입력하세요">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                             <TextField fx:id="tfmanagerid" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="관리자를 선택하세요">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                                 <TextField fx:id="tfdepartid" editable="false" prefHeight="30.0" prefWidth="381.0" promptText="부서를 선택하세요" style="-fx-background-radius: 5;">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </TextField>
+                  </children>
+               </VBox>
+               <VBox layoutX="23.0" layoutY="28.0" prefHeight="451.0" prefWidth="73.0" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="28.0">
+                  <children>
+                     <Label fx:id="lbempid" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="아이디" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                     <Label fx:id="lbfirstname" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="이름" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                       <Label fx:id="lblastname" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="성" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                         </Label>
+                        <Label fx:id="lbemail" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="이메일" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                       <Label fx:id="lbphone" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="전화번호" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                        <Label fx:id="lbhiredate" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="고용일" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                     <Label fx:id="lbjobid" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="잡아이디" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                       <Label fx:id="lbsalary" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="월급" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                        <Label fx:id="lbcommis" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="커미션" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                      <Label fx:id="lbmanagerid" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="관리자" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                       <Label fx:id="lbdepartid" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="235.0" text="부서" textAlignment="CENTER">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                  </children>
+               </VBox>
+                                    <Button fx:id="btnAddEmployee" layoutX="76.0" layoutY="612.0" mnemonicParsing="false" onAction="#actionReadyAddEmployee" prefHeight="29.0" prefWidth="282.0" text="정보 수정/삭제 준비" />
+                     </children>
+                      </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                       <children>
+                  <BorderPane layoutX="258.0" layoutY="72.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <center>
+                        <TableView fx:id="employeeTable" editable="true" prefHeight="650.0" prefWidth="870.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                                <columns>
+                                    <TableColumn fx:id="empIdColumn" prefWidth="100" text="EmployeeID" />
+                                    <TableColumn fx:id="empNameColumn" prefWidth="125" text="FirstName" />
+                                    <TableColumn fx:id="empLastNameColumn" prefWidth="125" text="LastName" />
+                                    <TableColumn fx:id="empEmailColumn" prefWidth="200" text="Email" />
+                                    <TableColumn fx:id="empPhoneNumberColumn" prefWidth="200" text="Phone" />
+                                    <TableColumn fx:id="empHireDateColumn" prefWidth="180" text="Hire Date" />
+                                </columns>
+                        </TableView>
+                     </center>
+                                 <top>
+                                    <AnchorPane prefHeight="27.0" prefWidth="777.0" BorderPane.alignment="CENTER">
+                                       <children>
+                              <Button fx:id="btnAllEmployee" layoutX="459.0" mnemonicParsing="false" onAction="#actionAllEmployee" prefHeight="29.0" prefWidth="288.0" text="수정할 직원찾기" />
+                                          <TextField fx:id="tfupdatemanager" alignment="CENTER" layoutX="20.0" layoutY="-1.0" prefHeight="30.0" prefWidth="397.0" promptText="직원의 이름을 입력하세요" />
+                                       </children>
+                                    </AnchorPane>
+                                 </top>
+                  </BorderPane>
+               </children>
+                      </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="92.0" prefWidth="1198.0">
+          <children>
+                        <ComboBox fx:id="cbJobid" layoutX="132.0" layoutY="46.0" onAction="#actionJobClicked" prefHeight="29.0" prefWidth="303.0" promptText="잡아이디를 선택하세요" />
+                        <Label fx:id="lbjobid2" alignment="CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="46.0" prefHeight="30.0" prefWidth="99.0" text="잡아이디" textAlignment="CENTER" />
+                        <Label fx:id="lbdepartid2" alignment="CENTER" contentDisplay="CENTER" layoutX="31.0" layoutY="86.0" prefHeight="30.0" prefWidth="99.0" text="부서" textAlignment="CENTER" />
+                        <ComboBox fx:id="cbdepartid" layoutX="132.0" layoutY="86.0" onAction="#actionDepartClicked" prefHeight="29.0" prefWidth="303.0" promptText="부서를 선택하세요" />
+                        <Button fx:id="btnAddAfEmployee" layoutX="201.0" layoutY="129.0" mnemonicParsing="false" onAction="#actionUpdateEmployee" prefHeight="34.0" prefWidth="234.0" text="직원정보수정" />
+                  <TextField fx:id="tfsearchmanager" alignment="CENTER" editable="false" layoutX="460.0" layoutY="12.0" prefHeight="30.0" prefWidth="387.0" promptText="관리자의 이름을 입력하세요" />
+                  <Button fx:id="btnSearchManager" layoutX="899.0" layoutY="13.0" mnemonicParsing="false" onAction="#actionSearchManger" prefHeight="29.0" prefWidth="246.0" text="이름으로 관리자 찾기" />
+                  <TableView fx:id="tvSearchManager" layoutX="460.0" layoutY="46.0" prefHeight="228.0" prefWidth="716.0">
+                    <columns>
+                                    <TableColumn fx:id="empIdColumn3" prefWidth="133.0" text="관리자아이디" />
+                                    <TableColumn fx:id="empNameColumn3" prefWidth="192.0" text="이름" />
+                                    <TableColumn fx:id="empLastNameColumn3" prefWidth="160.0" text="성" />
+                                    <TableColumn fx:id="empEmailColumn3" prefWidth="170.0" text="이메일" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="btnCancelEmployee" layoutX="22.0" layoutY="129.0" mnemonicParsing="false" onAction="#actionCancelEmployee" prefHeight="76.0" prefWidth="163.0" text="정보 수정/삭제 취소" />
+                  <Button fx:id="btndelEmployee" layoutX="201.0" layoutY="172.0" mnemonicParsing="false" onAction="#actionDeleteEmployee" prefHeight="34.0" prefWidth="234.0" text="직원정보삭제" />
+                     </children>
+          </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</fx:root>

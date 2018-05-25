@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <SplitPane dividerPositions="0.65" prefHeight="750.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane fx:id="pieAnchor" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1100.0">
+             <children>
+   	          <TableView fx:id="employeeTable" editable="true" prefHeight="676.0" prefWidth="870.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+   	                <columns>
+   	                    <TableColumn fx:id="empIdColumn" prefWidth="100" text="EmployeeID" />
+   	                  <TableColumn fx:id="empNameColumn" prefWidth="125" text="FirstName" />
+   	                  <TableColumn fx:id="empLastNameColumn" prefWidth="125" text="LastName" />
+   	                    <TableColumn fx:id="empEmailColumn" prefWidth="200" text="Email" />
+   	                    <TableColumn fx:id="empPhoneNumberColumn" prefWidth="200" text="Phone" />
+   	                    <TableColumn fx:id="empHireDateColumn" prefWidth="180" text="Hire Date" />
+   	                </columns>
+   	              </TableView>
+             </children>
+          </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</fx:root>
