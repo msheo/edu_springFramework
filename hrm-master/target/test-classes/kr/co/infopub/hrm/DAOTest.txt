@@ -1,0 +1,28 @@
+01: package kr.co.infopub.hrm;
+02: import java.util.List;
+03: import org.junit.Test;
+04: import org.junit.runner.RunWith;
+05: import org.springframework.beans.factory.annotation.Autowired;
+06: import org.springframework.boot.test.context.SpringBootTest;
+07: import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+08: import org.springframework.test.context.junit4.SpringRunner;
+09: import org.junit.Assert;
+10: import kr.co.infopub.hrm.dao.EmployeeDao;
+11: import kr.co.infopub.hrm.dto.EmployeeDto;
+12: @RunWith(SpringRunner.class)
+13: @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+14: public class DAOTest {
+15:  @Autowired
+16:  private EmployeeDao service;
+17:  @Test
+18:  public void test() {   
+19:     try {
+20: 		List<EmployeeDto> lists=service.findAllEmployees();
+21: 		Assert.assertEquals(127, lists.size());  // 사원수를 변경하세요
+22: 		Assert.assertEquals(100, lists.get(0).getEmployeeId());
+23: 		Assert.assertEquals("Steven", lists.get(0).getFirstName());
+24: 		Assert.assertEquals("King", lists.get(0).getLastName());
+25: 	} catch (Exception e) {
+26: 	}
+27:  }
+28: }

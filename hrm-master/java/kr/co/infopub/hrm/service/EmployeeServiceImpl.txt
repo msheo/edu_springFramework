@@ -1,0 +1,120 @@
+001: package kr.co.infopub.hrm.service;
+002: import java.util.List;
+003: import java.util.Map;
+004: import org.springframework.beans.factory.annotation.Autowired;
+005: import org.springframework.stereotype.Service;
+006: import org.springframework.transaction.annotation.Transactional;
+007: import kr.co.infopub.hrm.dao.EmployeeDao;
+008: import kr.co.infopub.hrm.dto.DepCountDto;
+009: import kr.co.infopub.hrm.dto.DepartmentDto;
+010: import kr.co.infopub.hrm.dto.EmployeeDto;
+011: @Service
+012: public class EmployeeServiceImpl implements EmployeeService {
+013:  @Autowired
+014:  private EmployeeDao employeeDao;
+015:  @Override
+016:  @Transactional(readOnly=true)
+017:  public List<EmployeeDto> findAllEmployees() throws Exception {
+018: 	return employeeDao.findAllEmployees();
+019:  }
+020:  @Override
+021:  @Transactional(readOnly=true)
+022:  public List<DepartmentDto> findAllDepartments() throws Exception {
+023: 	return employeeDao.findAllDepartments();
+024:  }
+025:  @Override
+026:  @Transactional(readOnly=true)
+027:  public List<EmployeeDto> findTreeManagerInEmployee() throws Exception {
+028: 	return employeeDao.findTreeManagerInEmployee();
+029:  }
+030: 	
+031: 	@Override
+032: 	@Transactional(readOnly=true)
+033: 	public List<EmployeeDto> findEmployeesByDepartName(Map<String, String> map) throws Exception {
+034: 		return employeeDao.findEmployeesByDepartName(map);
+035: 	}
+036: 
+037: 	@Override
+038: 	@Transactional(readOnly=true)
+039: 	public int getEmployeesTotal() throws Exception {
+040: 		return employeeDao.getEmployeesTotal();
+041: 	}
+042: 
+043: 	@Override
+044: 	@Transactional(readOnly=true)
+045: 	public List<DepartmentDto> findAllDepartments2() throws Exception {
+046: 		return employeeDao.findAllDepartments2();
+047: 	}
+048: 
+049: 	@Override
+050: 	@Transactional(readOnly=true)
+051: 	public List<DepCountDto> findAllDepCounts() throws Exception {
+052: 		return employeeDao.findAllDepCounts();
+053: 	}
+054: 
+055: 	@Override
+056: 	@Transactional(readOnly=true)
+057: 	public List<String> findAllJobs() throws Exception {
+058: 		return employeeDao.findAllJobs();
+059: 	}
+060: 
+061: 
+062: 
+063: 	@Override
+064: 	@Transactional(readOnly=true)
+065: 	public List<EmployeeDto> findEmployeesByManagerId(Map<String, String> map) throws Exception {
+066: 		return employeeDao.findEmployeesByManagerId(map);
+067: 	}
+068: 
+069: 	@Override
+070: 	@Transactional(readOnly=true)
+071: 	public List<EmployeeDto> findEmployeesByEmpId(Map<String, String> map) throws Exception {
+072: 		return employeeDao.findEmployeesByEmpId(map);
+073: 	}
+074: 
+075: 	@Override
+076: 	@Transactional(readOnly=true)
+077: 	public EmployeeDto findEmployeeById(Map<String, String> map) throws Exception {
+078: 		return employeeDao.findEmployeeById(map);
+079: 	}
+080: 
+081: 	@Override
+082: 	@Transactional(readOnly=true)
+083: 	public List<EmployeeDto> findManagersByName(Map<String, String> map) throws Exception {
+084: 		return employeeDao.findManagersByName(map);
+085: 	}
+086: 
+087: 	@Override
+088: 	@Transactional(readOnly=true)
+089: 	public int getTreeMaxLevel() throws Exception {
+090: 		return employeeDao.getTreeMaxLevel();
+091: 	}
+092: 
+093: 	@Override
+094: 	@Transactional
+095: 	public int addEmployee(EmployeeDto emp) throws Exception {
+096: 		       employeeDao.addEmployee(emp);
+097: 		return employeeDao.findAfterAdd();
+098: 	}
+099: 
+100: 	@Override
+101: 	@Transactional
+102: 	public boolean updateEmployee(EmployeeDto emp) throws Exception {
+103: 		return employeeDao.updateEmployee(emp);
+104: 	}
+105: 
+106: 	@Override
+107: 	@Transactional
+108: 	public boolean updateJobHistory(EmployeeDto emp) throws Exception {
+109: 		return employeeDao.updateJobHistory(emp);
+110: 	}
+111: 
+112: 	@Override
+113: 	@Transactional
+114: 	public boolean deleteEmployee(Map<String, String> emp) throws Exception {
+115: 		return employeeDao.deleteEmployee(emp);
+116: 	}
+117: 
+118: 
+119: 	
+120: }

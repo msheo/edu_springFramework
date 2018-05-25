@@ -1,0 +1,29 @@
+01: package kr.co.infopub.hrm.service;
+02: import java.util.List;
+03: import java.util.Map;
+04: 
+05: import kr.co.infopub.hrm.dto.DepCountDto;
+06: import kr.co.infopub.hrm.dto.DepartmentDto;
+07: import kr.co.infopub.hrm.dto.EmployeeDto;
+08: public interface EmployeeService {
+09:  public List<EmployeeDto> findAllEmployees() throws Exception;
+10:  public List<DepartmentDto> findAllDepartments () throws Exception;
+11:  public List<EmployeeDto> findTreeManagerInEmployee () throws Exception;
+12: 	
+13: 	public List<EmployeeDto> findEmployeesByDepartName(Map<String, String> map)throws Exception;
+14: 	public int getEmployeesTotal()throws Exception;
+15: 	public List<DepartmentDto> findAllDepartments2()throws Exception;
+16: 	public List<DepCountDto> findAllDepCounts() throws Exception;
+17: 	public  List<String> findAllJobs ()throws Exception;
+18: 	
+19: 	public  List<EmployeeDto> findEmployeesByManagerId (Map<String, String> map)throws Exception;
+20: 	public  List<EmployeeDto> findEmployeesByEmpId (Map<String, String> map) throws Exception;
+21: 	public  EmployeeDto findEmployeeById (Map<String, String> map)throws Exception;
+22: 	public  List<EmployeeDto> findManagersByName(Map<String, String> map)throws Exception;
+23: 	
+24: 	public  int getTreeMaxLevel ()throws Exception;
+25: 	public  int addEmployee (EmployeeDto emp)throws Exception;
+26: 	public  boolean updateEmployee(EmployeeDto emp)throws Exception;
+27: 	public  boolean updateJobHistory(EmployeeDto emp)throws Exception;
+28: 	public  boolean deleteEmployee (Map<String, String> emp)throws Exception;
+29: }

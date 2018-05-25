@@ -1,0 +1,92 @@
+01: package kr.co.infopub.hrm.controller;
+02: import java.util.Date;
+03: import java.util.List;
+04: import org.slf4j.Logger;
+05: import org.slf4j.LoggerFactory;
+06: import org.springframework.beans.factory.annotation.Autowired;
+07: import org.springframework.http.HttpStatus;
+08: import org.springframework.http.ResponseEntity;
+09: import org.springframework.web.bind.annotation.RequestMapping;
+10: import org.springframework.web.bind.annotation.RequestMethod;
+11: import org.springframework.web.bind.annotation.RestController;
+12: import io.swagger.annotations.Api;
+13: import io.swagger.annotations.ApiOperation;
+14: import kr.co.infopub.hrm.dto.DepCountDto;
+15: import kr.co.infopub.hrm.dto.DepartmentDto;
+16: import kr.co.infopub.hrm.dto.EmployeeDto;
+17: import kr.co.infopub.hrm.help.NumberResult;
+18: import kr.co.infopub.hrm.service.EmployeeService;
+19: @RestController
+20: @RequestMapping("/api")
+21: @Api(value="hrm", description="Human Resouces Management - Oracle DBM DB Schema")
+22: public class EmployeeController {
+23:  public static final Logger logger = 
+24: 		 LoggerFactory.getLogger(EmployeeController.class);
+25:  private String to__(String v){
+26: 	return v.replaceAll(" ", "%20");
+27:  }
+28:  private String __to(String v){
+29: 	return v.replaceAll("%20", " ");
+30:  }
+31:  @Autowired
+32:  private EmployeeService  employeeService; 
+33: 
+34:  @ApiOperation(value = "모든 사원의 정보를 반환한다.", response = List.class)
+35:  @RequestMapping(value = "/findAllEmployees", method = RequestMethod.GET)
+36:  public ResponseEntity<List<EmployeeDto>> findAllEmployees() throws Exception {
+37: 	logger.info("1-------------findAllEmployees----------------"+new Date());
+38: 	List<EmployeeDto> emps = employeeService.findAllEmployees();
+39: 	if (emps.isEmpty()) {
+40: 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+41: 	}
+42: 	return new ResponseEntity<List<EmployeeDto>>(emps, HttpStatus.OK);
+43:  }
+44:  @ApiOperation(value = "모든 부서의 정보를 반환한다. "
+45:  		 + "적어도 1명 이상의 사원이 있는 부서만 반환한다.", response = List.class)
+46:  @RequestMapping(value = "/findAllDepartments", method = RequestMethod.GET)
+47:  public ResponseEntity<List<DepartmentDto>> findAllDepartments() throws Exception {
+48: 	logger.info("2-------------findAllDepartments--------"+new Date());
+49: 	List<DepartmentDto> emps = employeeService.findAllDepartments();
+50: 	if (emps.isEmpty()) {
+51: 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+52: 	}
+53: 	return new ResponseEntity<List<DepartmentDto>>(emps, HttpStatus.OK);
+54:  }
+55:  @ApiOperation(value = " 사원과 관리자 관계를 트리로 반환한다.", response = List.class)
+56:  @RequestMapping(value = "/findTreeManagerInEmployee", method = RequestMethod.GET)
+57:  public ResponseEntity<List<EmployeeDto>> findTreeManagerInEmployee() 
+58: 		                                                  throws Exception {
+59: 	logger.info("3-------findTreeManagerInEmployee--------"+new Date());
+60: 	List<EmployeeDto> emps = employeeService.findTreeManagerInEmployee();
+61: 	if (emps.isEmpty()) {
+62: 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+63: 	}
+64: 	return new ResponseEntity<List<EmployeeDto>>(emps, HttpStatus.OK);
+65:  }
+66:  @ApiOperation(value = " 관리자와 사원의 관계를 트리로 만들때 최대 leaf값을 반환한다.",
+67: 		                               response = NumberResult.class)
+68:  @RequestMapping(value = "/getTreeMaxLevel", method = RequestMethod.GET)
+69:  public ResponseEntity<NumberResult> getTreeMaxLevel() throws Exception {
+70: 	logger.info("4---------getTreeMaxLevel--------"+new Date());
+71: 	int total = employeeService.getTreeMaxLevel();
+72: 	NumberResult nr=new NumberResult();
+73: 	nr.setCount(total);
+74: 	nr.setName("getTreeMaxLevel");
+75: 	nr.setState("succ");
+76: 	if (total<=0) {
+77: 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+78: 	}
+79: 	return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
+80:  }	
+81:  @ApiOperation(value = " 각 부서에 소속된 사원 수, 부서번호, 부서이름를 반환한다.", 
+82: 		                                              response = List.class)
+83:  @RequestMapping(value = "/findAllDepCounts", method = RequestMethod.GET)
+84:  public ResponseEntity<List<DepCountDto>> findAllDepCounts() throws Exception {
+85: 	logger.info("5--------findAllDepCounts---------------"+new Date());
+86: 	List<DepCountDto> emps = employeeService.findAllDepCounts();
+87: 	if (emps.isEmpty()) {
+88: 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+89: 	}
+90: 	return new ResponseEntity<List<DepCountDto>>(emps, HttpStatus.OK);
+91:  }
+92: }

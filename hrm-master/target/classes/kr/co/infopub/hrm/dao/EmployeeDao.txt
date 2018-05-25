@@ -1,0 +1,112 @@
+001: package kr.co.infopub.hrm.dao;
+002: import java.util.List;
+003: import java.util.Map;
+004: import org.apache.ibatis.session.SqlSession;
+005: import org.springframework.beans.factory.annotation.Autowired;
+006: import org.springframework.stereotype.Repository;
+007: import kr.co.infopub.hrm.dto.DepCountDto;
+008: import kr.co.infopub.hrm.dto.DepartmentDto;
+009: import kr.co.infopub.hrm.dto.EmployeeDto;
+010: import kr.co.infopub.hrm.mapper.HrmMapper;
+011: @Repository
+012: public class EmployeeDao implements HrmMapper{
+013:  private String ns="kr.co.infopub.hrm.mapper.HrmMapper.";
+014:  @Autowired
+015:  private SqlSession sqlSession;
+016: 
+017:  @Override
+018:  public List<EmployeeDto> findAllEmployees() throws Exception{
+019:      return sqlSession.selectList(ns+"findAllEmployees");
+020:  }
+021:  @Override
+022:  public List<DepartmentDto> findAllDepartments() throws Exception{
+023: 	 return  sqlSession.selectList(ns+"findAllDepartments");
+024:  }
+025:  @Override
+026:  public List<EmployeeDto> findTreeManagerInEmployee() throws Exception{
+027: 	 return  sqlSession.selectList(ns+"findTreeManagerInEmployee");
+028:  }
+029: 	
+030: 	
+031: 	
+032: 	@Override
+033: 	public List<EmployeeDto> findEmployeesByDepartName(Map<String, String> map) throws Exception{
+034: 		 return sqlSession.selectList(ns+"findEmployeesByDepartName",map);
+035: 	}
+036: 
+037: 	@Override
+038: 	public int getEmployeesTotal() throws Exception{
+039: 		return sqlSession.selectOne(ns+"getEmployeesTotal");
+040: 	}
+041: 
+042: 	@Override
+043: 	public List<DepartmentDto> findAllDepartments2() throws Exception{
+044: 		return  sqlSession.selectList(ns+"findAllDepartments2");
+045: 	}
+046: 
+047: 	@Override
+048: 	public List<DepCountDto> findAllDepCounts() throws Exception{
+049: 		return  sqlSession.selectList(ns+"findAllDepCounts");
+050: 	}
+051: 
+052: 	@Override
+053: 	public List<String> findAllJobs() throws Exception{
+054: 		return  sqlSession.selectList(ns+"findAllJobs");
+055: 	}
+056: 
+057: 
+058: 
+059: 	@Override
+060: 	public List<EmployeeDto> findEmployeesByManagerId(Map<String, String> map) throws Exception{
+061: 		return  sqlSession.selectList(ns+"findEmployeesByManagerId",map);
+062: 	}
+063: 
+064: 	@Override
+065: 	public List<EmployeeDto> findEmployeesByEmpId(Map<String, String> map)throws Exception{
+066: 		return  sqlSession.selectList(ns+"findEmployeesByEmpId",map);
+067: 	}
+068: 
+069: 	@Override
+070: 	public EmployeeDto findEmployeeById(Map<String, String> map) throws Exception{
+071: 		return  sqlSession.selectOne(ns+"findEmployeeById",map);
+072: 	}
+073: 
+074: 	@Override
+075: 	public List<EmployeeDto> findManagersByName(Map<String, String> map) throws Exception{
+076: 		return  sqlSession.selectList(ns+"findManagersByName",map);
+077: 	}
+078: 
+079: 	@Override
+080: 	public int getTreeMaxLevel() throws Exception{
+081: 		return  sqlSession.selectOne(ns+"getTreeMaxLevel");
+082: 	}
+083: 
+084: 	@Override
+085: 	public int findAfterAdd() throws Exception{
+086: 		return sqlSession.selectOne(ns+"findAfterAdd");
+087: 	}
+088: 
+089: 	@Override
+090: 	public int addEmployee(EmployeeDto emp)throws Exception{
+091: 		sqlSession.insert(ns+"addEmployee",emp);
+092: 		return 0;
+093: 	}
+094: 
+095: 	@Override
+096: 	public boolean updateEmployee(EmployeeDto emp) throws Exception{
+097: 		sqlSession.update(ns+"updateEmployee",emp);
+098: 		return true;
+099: 	}
+100: 
+101: 	@Override
+102: 	public boolean updateJobHistory(EmployeeDto emp) throws Exception{
+103: 		sqlSession.update(ns+"updateJobHistory",emp);
+104: 		return true;
+105: 	}
+106: 
+107: 	@Override
+108: 	public boolean deleteEmployee(Map<String, String> emp) throws Exception{
+109: 		sqlSession.delete(ns+"deleteEmployee",emp);
+110: 		return true;
+111: 	}
+112: }

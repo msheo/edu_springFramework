@@ -1,0 +1,42 @@
+http://localhost:8199/humans/api/findAllEmployees
+	[
+	    {
+	        "email": "SKING",
+	        "salary": 24000,
+	        "order2": null,
+	        "firstName": "Steven",
+	        "phoneNumber": "515.123.4567",
+	        "hireDate": "2003-06-17",
+	        "jobId": "AD_PRES",
+	        "employeeId": 100,
+	        "lastName": "King",
+	        "managerId": 0,
+	        "commissionPct": 0,
+	        "departmantId": 90
+	    },*/
+	    
+http://localhost:8199/humans/api/findAllDepartments
+	[
+	    {
+	        "department_id": 10,
+	        "department_name": "Administration",
+	        "manager_id": 0,
+	        "location_id": 0
+	    },
+	    
+http://localhost:8199/humans/api/findTreeManagerInEmployee
+    [
+	    {
+	        "email": null,
+	        "salary": 0,
+	        "order2": "/001100",
+	        "firstName": "Steven",
+	        "phoneNumber": null,
+	        "hireDate": null,
+	        "jobId": null,
+	        "employeeId": 100,
+	        "lastName": "King",
+	        "managerId": 0,
+	        "commissionPct": 0,
+	        "departmantId": 90
+	    },*/

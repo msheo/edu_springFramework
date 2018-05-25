@@ -1,0 +1,488 @@
+001: package kr.co.infopub.hrm.controller;
+002: import java.util.Date;
+003: import java.util.HashMap;
+004: import java.util.List;
+005: import java.util.Map;
+006: import org.slf4j.Logger;
+007: import org.slf4j.LoggerFactory;
+008: import org.springframework.beans.factory.annotation.Autowired;
+009: import org.springframework.http.HttpStatus;
+010: import org.springframework.http.ResponseEntity;
+011: import org.springframework.web.bind.annotation.PathVariable;
+012: import org.springframework.web.bind.annotation.RequestBody;
+013: import org.springframework.web.bind.annotation.RequestMapping;
+014: import org.springframework.web.bind.annotation.RequestMethod;
+015: import org.springframework.web.bind.annotation.RestController;
+016: import io.swagger.annotations.Api;
+017: import io.swagger.annotations.ApiOperation;
+018: import kr.co.infopub.hrm.dto.DepCountDto;
+019: import kr.co.infopub.hrm.dto.DepartmentDto;
+020: import kr.co.infopub.hrm.dto.EmployeeDto;
+021: import kr.co.infopub.hrm.help.BoolResult;
+022: import kr.co.infopub.hrm.help.NumberResult;
+023: import kr.co.infopub.hrm.service.EmployeeService;
+024: 
+025: public class EmployeeController2 {
+026:  public static final Logger logger = 
+027: 		 LoggerFactory.getLogger(EmployeeController2.class);
+028:  private String to__(String v){
+029: 	return v.replaceAll(" ", "%20");
+030:  }
+031:  private String __to(String v){
+032: 	return v.replaceAll("%20", " ");
+033:  }
+034:  @Autowired
+035:  private EmployeeService  employeeService; 
+036:  /*	http://localhost:8199/humans/api/findAllEmployees
+037: 	[
+038: 	    {
+039: 	        "email": "SKING",
+040: 	        "salary": 24000,
+041: 	        "order2": null,
+042: 	        "firstName": "Steven",
+043: 	        "phoneNumber": "515.123.4567",
+044: 	        "hireDate": "2003-06-17",
+045: 	        "jobId": "AD_PRES",
+046: 	        "employeeId": 100,
+047: 	        "lastName": "King",
+048: 	        "managerId": 0,
+049: 	        "commissionPct": 0,
+050: 	        "departmantId": 90
+051: 	    },*/
+052:  @ApiOperation(value = "모든 사원의 정보를 반환한다.", response = List.class)
+053:  @RequestMapping(value = "/findAllEmployees", method = RequestMethod.GET)
+054:  public ResponseEntity<List<EmployeeDto>> findAllEmployees() throws Exception {
+055: 	logger.info("1-------------findAllEmployees----------------"+new Date());
+056: 	List<EmployeeDto> emps = employeeService.findAllEmployees();
+057: 	if (emps.isEmpty()) {
+058: 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+059: 	}
+060: 	return new ResponseEntity<List<EmployeeDto>>(emps, HttpStatus.OK);
+061:  }
+062:  /*	http://localhost:8199/humans/api/findAllDepartments
+063:     [
+064: 	    {
+065: 	        "department_id": 10,
+066: 	        "department_name": "Administration",
+067: 	        "manager_id": 0,
+068: 	        "location_id": 0
+069: 	    },*/
+070:  @ApiOperation(value = "모든 부서의 정보를 반환한다. 적어도 1명 이상의 사원이 있는 부서만 반환한다.", 
+071: 		                                              response = List.class)
+072:  @RequestMapping(value = "/findAllDepartments", method = RequestMethod.GET)
+073:  public ResponseEntity<List<DepartmentDto>> findAllDepartments() throws Exception {
+074: 	logger.info("1-------------findAllDepartments--------"+new Date());
+075: 	List<DepartmentDto> emps = employeeService.findAllDepartments();
+076: 	if (emps.isEmpty()) {
+077: 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+078: 	}
+079: 	return new ResponseEntity<List<DepartmentDto>>(emps, HttpStatus.OK);
+080:  }
+081:  /*	http://localhost:8199/humans/api/findTreeManagerInEmployee
+082:     [
+083: 	    {
+084: 	        "email": null,
+085: 	        "salary": 0,
+086: 	        "order2": "/001100",
+087: 	        "firstName": "Steven",
+088: 	        "phoneNumber": null,
+089: 	        "hireDate": null,
+090: 	        "jobId": null,
+091: 	        "employeeId": 100,
+092: 	        "lastName": "King",
+093: 	        "managerId": 0,
+094: 	        "commissionPct": 0,
+095: 	        "departmantId": 90
+096: 	    },*/
+097:  @ApiOperation(value = " 사원과 관리자 관계를 트리로 반환한다.", response = List.class)
+098:  @RequestMapping(value = "/findTreeManagerInEmployee", method = RequestMethod.GET)
+099:  public ResponseEntity<List<EmployeeDto>> findTreeManagerInEmployee() 
+100: 		                                                  throws Exception {
+101: 	logger.info("1-------findTreeManagerInEmployee--------"+new Date());
+102: 	List<EmployeeDto> emps = employeeService.findTreeManagerInEmployee();
+103: 	if (emps.isEmpty()) {
+104: 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+105: 	}
+106: 	return new ResponseEntity<List<EmployeeDto>>(emps, HttpStatus.OK);
+107:  }
+108:     
+109: 
+110: 
+111: /*	http://localhost:8199/humans/api/findEmployeesByDepartName/Human Resources
+112:  http://localhost:8199/humans/api/findEmployeesByDepartName/Human%20Resources
+113: 	[
+114: 	    {
+115: 	        "email": "SMAVRIS",
+116: 	        "salary": 6500,
+117: 	        "order2": null,
+118: 	        "firstName": "Susan",
+119: 	        "phoneNumber": "515.123.7777",
+120: 	        "hireDate": "2002-06-07",
+121: 	        "jobId": "HR_REP",
+122: 	        "employeeId": 203,
+123: 	        "lastName": "Mavris",
+124: 	        "managerId": 101,
+125: 	        "commissionPct": 0,
+126: 	        "departmantId": 40
+127: 	    }
+128: 	]*/
+129:     @ApiOperation(value = "해당부서의 사원 정보를 반환한다. 부서이름을 입력하지 않으면 NOTYET을 입력한다.", response = List.class)
+130: 	@RequestMapping(value = "/findEmployeesByDepartName/{name}", method = RequestMethod.GET)
+131: 	public ResponseEntity<List<EmployeeDto>> findEmployeesByDepartName(@PathVariable String name) throws Exception {
+132: 		logger.info("1-------------findEmployeesByDepartName------------------------------------------------------"+new Date());
+133: 		logger.info("1-------------findEmployeesByDepartName-------------------------------------->>----------------"+name);
+134: 		if(name.equalsIgnoreCase("NotYet")){
+135: 			name="NotYet".toUpperCase();
+136: 		}else{
+137: 			name=__to(name);
+138: 		}
+139: 		Map<String, String> map=new HashMap<String, String>();
+140: 		map.put("department_name", name);
+141: 		
+142: 		logger.info("1-------------findEmployeesByDepartName------------------------------------->>-----------------"+name);
+143: 		List<EmployeeDto> emps = employeeService.findEmployeesByDepartName(map);
+144: 		if (emps.isEmpty()) {
+145: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+146: 		}
+147: 		return new ResponseEntity<List<EmployeeDto>>(emps, HttpStatus.OK);
+148: 	}
+149: /*	
+150: http://localhost:8199/humans/api/getEmployeesTotal
+151:    {
+152: 	    "name": "getEmployeesTotal",
+153: 	    "count": 123,
+154: 	    "state": "succ"
+155: 	}*/
+156:     @ApiOperation(value = "모든 사원의 수를 반환한다.", response = NumberResult.class)
+157: 	@RequestMapping(value = "/getEmployeesTotal", method = RequestMethod.GET)
+158: 	public ResponseEntity<NumberResult> getEmployeesTotal() throws Exception {
+159: 		logger.info("1-------------findAllEmployees-----------------------------"+new Date());
+160: 		int total = employeeService.getEmployeesTotal();
+161: 		NumberResult nr=new NumberResult();
+162: 		nr.setCount(total);
+163: 		nr.setName("getEmployeesTotal");
+164: 		nr.setState("succ");
+165: 		if (total<=0) {
+166: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+167: 		}
+168: 		return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
+169: 	}
+170: 	
+171: /*http://localhost:8199/humans/api/findAllDepartments2
+172:    [
+173: 	    {
+174: 	        "department_id": 10,
+175: 	        "department_name": "Administration",
+176: 	        "manager_id": 0,
+177: 	        "location_id": 0
+178: 	    },*/
+179:     @ApiOperation(value = "모든 부서의 정보를 반환한다. 사원이 없는 부서도 반환한다.", response = List.class)
+180: 	@RequestMapping(value = "/findAllDepartments2", method = RequestMethod.GET)
+181: 	public ResponseEntity<List<DepartmentDto>> findAllDepartments2() throws Exception {
+182: 		logger.info("1-------------findAllDepartments2-----------------------------"+new Date());
+183: 		List<DepartmentDto> emps = employeeService.findAllDepartments2();
+184: 		if (emps.isEmpty()) {
+185: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+186: 		}
+187: 		return new ResponseEntity<List<DepartmentDto>>(emps, HttpStatus.OK);
+188: 	}
+189: /*	http://localhost:8199/humans/api/findAllDepCounts
+190: 	[
+191: 	    {
+192: 	        "count": 45,
+193: 	        "department_id": 50,
+194: 	        "department_name": "Shipping"
+195: 	    },*/
+196:     @ApiOperation(value = " 각 부서에 소속된 사원 수, 부서번호, 부서이름를 반환한다.", response = List.class)
+197: 	@RequestMapping(value = "/findAllDepCounts", method = RequestMethod.GET)
+198: 	public ResponseEntity<List<DepCountDto>> findAllDepCounts() throws Exception {
+199: 		logger.info("1-------------findAllDepCounts-----------------------------"+new Date());
+200: 		List<DepCountDto> emps = employeeService.findAllDepCounts();
+201: 		if (emps.isEmpty()) {
+202: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+203: 		}
+204: 		return new ResponseEntity<List<DepCountDto>>(emps, HttpStatus.OK);
+205: 	}
+206: /*	http://localhost:8199/humans/api/findAllJobs
+207: 		[
+208: 		    "AD_PRES",
+209: 		    "AD_VP",
+210: 		    "AD_ASST",
+211: 		    "FI_MGR",
+212: 		    "FI_ACCOUNT",
+213: 		    "AC_MGR",
+214: 		    "AC_ACCOUNT",*/
+215:     @ApiOperation(value = " 모든 직무를 반환한다.", response = List.class)
+216: 	@RequestMapping(value = "/findAllJobs", method = RequestMethod.GET)
+217: 	public ResponseEntity<List<String>> findAllJobs() throws Exception {
+218: 		logger.info("1-------------findAllJobs-----------------------------"+new Date());
+219: 		List<String> emps = employeeService.findAllJobs();
+220: 		if (emps.isEmpty()) {
+221: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+222: 		}
+223: 		return new ResponseEntity<List<String>>(emps, HttpStatus.OK);
+224: 	}
+225: /*	http://localhost:8199/humans/api/findEmployeesByManagerId/101
+226: 	[
+227: 	    {
+228: 	        "email": "NGREENBE",
+229: 	        "salary": 0,
+230: 	        "order2": null,
+231: 	        "firstName": "Nancy",
+232: 	        "phoneNumber": "515.124.4569",
+233: 	        "hireDate": "2002-08-17",
+234: 	        "jobId": null,
+235: 	        "employeeId": 108,
+236: 	        "lastName": "Greenberg",
+237: 	        "managerId": 101,
+238: 	        "commissionPct": 0,
+239: 	        "departmantId": 0
+240: 	    },*/
+241:     @ApiOperation(value = " 해당 관리자에 대한 사원 관계를 트리로 반환한다.", response = List.class)
+242: 	@RequestMapping(value = "/findEmployeesByManagerId/{managerId}", method = RequestMethod.GET)
+243: 	public ResponseEntity<List<EmployeeDto>> findEmployeesByManagerId(@PathVariable String managerId) throws Exception {
+244: 		logger.info("1-------------findEmployeesByManagerId------------------------------------------------------"+new Date());
+245: 		logger.info("1-------------findEmployeesByManagerId-------------------------------------->>----------------"+managerId);
+246: 		
+247: 		Map<String, String> map=new HashMap<String, String>();
+248: 		map.put("managerId", managerId);
+249: 		List<EmployeeDto> emps = employeeService.findEmployeesByManagerId(map);
+250: 		if (emps.isEmpty()) {
+251: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+252: 		}
+253: 		return new ResponseEntity<List<EmployeeDto>>(emps, HttpStatus.OK);
+254: 	}
+255: /*	http://localhost:8199/humans/api/findEmployeesByEmpId/101
+256: 	[
+257: 	    {
+258: 	        "email": "NKOCHHAR",
+259: 	        "salary": 0,
+260: 	        "order2": null,
+261: 	        "firstName": "Neena",
+262: 	        "phoneNumber": "515.123.4568",
+263: 	        "hireDate": "2005-09-21",
+264: 	        "jobId": null,
+265: 	        "employeeId": 101,
+266: 	        "lastName": "Kochhar",
+267: 	        "managerId": 0,
+268: 	        "commissionPct": 0,
+269: 	        "departmantId": 0
+270: 	    },*/
+271:     @ApiOperation(value = "  해당 사원에 의해 관리되는 사원의 정보를 반환한다.", response = List.class)
+272: 	@RequestMapping(value = "/findEmployeesByEmpId/{employeeId}", method = RequestMethod.GET)
+273: 	public ResponseEntity<List<EmployeeDto>> findEmployeesByEmpId(@PathVariable String employeeId) throws Exception {
+274: 		logger.info("1-------------findEmployeesByEmpId------------------------------------------------------"+new Date());
+275: 		logger.info("1-------------findEmployeesByEmpId-------------------------------------->>----------------"+employeeId);
+276: 		
+277: 		Map<String, String> map=new HashMap<String, String>();
+278: 		map.put("employeeId", employeeId);
+279: 		List<EmployeeDto> emps = employeeService.findEmployeesByEmpId(map);
+280: 		if (emps.isEmpty()) {
+281: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+282: 		}
+283: 		return new ResponseEntity<List<EmployeeDto>>(emps, HttpStatus.OK);
+284: 	}
+285: /*	http://localhost:8199/humans/api/findEmployeeById/101
+286: 	{
+287: 	    "email": "NKOCHHAR",
+288: 	    "salary": 17000,
+289: 	    "order2": null,
+290: 	    "firstName": "Neena",
+291: 	    "phoneNumber": "515.123.4568",
+292: 	    "hireDate": "2005-09-21",
+293: 	    "jobId": "AD_VP",
+294: 	    "employeeId": 101,
+295: 	    "lastName": "Kochhar",
+296: 	    "managerId": 100,
+297: 	    "commissionPct": 0,
+298: 	    "departmantId": 90
+299: 	}*/
+300:     @ApiOperation(value = "  해당 사원의 정보를 반환한다.", response = EmployeeDto.class)
+301: 	@RequestMapping(value = "/findEmployeeById/{employeeId}", method = RequestMethod.GET)
+302: 	public ResponseEntity<EmployeeDto> findEmployeeById(@PathVariable String employeeId) throws Exception {
+303: 		logger.info("1-------------findEmployeesByEmpId------------------------------------------------------"+new Date());
+304: 		logger.info("1-------------findEmployeesByEmpId-------------------------------------->>----------------"+employeeId);
+305: 		
+306: 		Map<String, String> map=new HashMap<String, String>();
+307: 		map.put("employeeId", employeeId);
+308: 		EmployeeDto emps = employeeService.findEmployeeById(map);
+309: 		if (emps==null) {
+310: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+311: 		}
+312: 		return new ResponseEntity<EmployeeDto>(emps, HttpStatus.OK);
+313: 	}
+314: /*	http://localhost:8199/humans/api/findManagersByName//king
+315: 		[
+316: 		    {
+317: 		        "email": "SKING",
+318: 		        "salary": 0,
+319: 		        "order2": null,
+320: 		        "firstName": "Steven",
+321: 		        "managerId": 0,
+322: 		        "hireDate": "2003-06-17",
+323: 		        "lastName": "King",
+324: 		        "employeeId": 100,
+325: 		        "jobId": null,
+326: 		        "phoneNumber": "515.123.4567",
+327: 		        "commissionPct": 0,
+328: 		        "departmantId": 0
+329: 		    },	*/
+330:     @ApiOperation(value = " 이름으로(성 또는 이름) 사원의 정보를 반환한다.", response = List.class)
+331: 	@RequestMapping(value = "/findManagersByName/{name}", method = RequestMethod.GET)
+332: 	public ResponseEntity<List<EmployeeDto>> findManagersByName(@PathVariable String name) throws Exception {
+333: 		logger.info("1-------------findManagersByName------------------------------------------------------"+new Date());
+334: 		logger.info("1-------------findManagersByName-------------------------------------->>----------------"+name);
+335: 		
+336: 		Map<String, String> map=new HashMap<String, String>();
+337: 		map.put("lastName", __to(name).toUpperCase());
+338: 		map.put("firstName", __to(name).toUpperCase());
+339: 		List<EmployeeDto> emps = employeeService.findManagersByName(map);
+340: 		if (emps.isEmpty()) {
+341: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+342: 		}
+343: 		return new ResponseEntity<List<EmployeeDto>>(emps, HttpStatus.OK);
+344: 	}
+345: 	
+346: /*	http://localhost:8199/humans/api/getTreeMaxLevel
+347: 	{
+348: 	    "name": "getTreeMaxLevel",
+349: 	    "count": 6,
+350: 	    "state": "succ"
+351: 	}*/
+352:     @ApiOperation(value = " 관리자와 사원의 관계를 트리로 만들때 최대 leaf값을 반환한다.", response = NumberResult.class)
+353: 	@RequestMapping(value = "/getTreeMaxLevel", method = RequestMethod.GET)
+354: 	public ResponseEntity<NumberResult> getTreeMaxLevel() throws Exception {
+355: 		logger.info("1-------------getTreeMaxLevel-----------------------------"+new Date());
+356: 		int total = employeeService.getTreeMaxLevel();
+357: 		NumberResult nr=new NumberResult();
+358: 		nr.setCount(total);
+359: 		nr.setName("getTreeMaxLevel");
+360: 		nr.setState("succ");
+361: 		if (total<=0) {
+362: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+363: 		}
+364: 		return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
+365: 	}
+366: 	
+367: 	
+368: /*http://localhost:8199/humans/api/addEmployee
+369:    {
+370:         "email": "JalI",
+371:         "salary": 3000,
+372:         "order2": null,
+373:         "firstName": "JJang",
+374:         "managerId": 101,
+375:         "hireDate": "2016-06-17",
+376:         "lastName": "Kom",
+377:         "employeeId": 0,
+378:         "jobId": "AD_PRES",
+379:         "phoneNumber": "123.456.678",
+380:         "commissionPct": 0,
+381:         "departmantId": 90
+382:     }
+383:     {
+384:     "name": "addEmployee",
+385:     "count": 357,
+386:     "state": "succ"
+387: }*/
+388: 	 
+389:     @ApiOperation(value = " 새로운 사원을 정보를 입력한다. 그리고 그 사원의 사원번호를 반환한다.", response = NumberResult.class)
+390: 	@RequestMapping(value = "/addEmployee", method = RequestMethod.POST)
+391: 	public ResponseEntity<NumberResult> addEmployee(@RequestBody EmployeeDto dto) throws Exception {
+392: 		logger.info("1-------------addEmployee-----------------------------"+new Date());
+393: 		logger.info("1-------------addEmployee-----------------------------"+dto);
+394: 		int total = employeeService.addEmployee(dto);
+395: 		NumberResult nr=new NumberResult();
+396: 		nr.setCount(total);
+397: 		nr.setName("addEmployee");
+398: 		nr.setState("succ");
+399: 		logger.info("1-------------addEmployee-------employeeid------------------"+total);
+400: 		if (total<=0) {
+401: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+402: 		}
+403: 		return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
+404: 	}
+405: /*	
+406: 	http://localhost:8199/humans/api/updateEmployee
+407:     {
+408:         "email": "JalI",
+409:         "salary": 3500,
+410:         "order2": null,
+411:         "firstName": "Jjangs",
+412:         "managerId": 101,
+413:         "hireDate": "2016-06-17",
+414:         "lastName": "Komi",
+415:         "employeeId": 357,
+416:         "jobId": "AD_PRES",
+417:         "phoneNumber": "123.456.678",
+418:         "commissionPct": 0,
+419:         "departmantId": 90
+420:     }*/
+421:     @ApiOperation(value = " 사원의 정보를 수정한다 만약 사원의 부서와 업무가 변경되면 잡히스토리에  자동(trigger)으로 추가된다. 원래 put이다.", response = BoolResult.class)
+422: 	@RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
+423: 	public ResponseEntity<BoolResult> updateEmployee(@RequestBody EmployeeDto dto) throws Exception {
+424: 		logger.info("1-------------updateEmployee-----------------------------"+new Date());
+425: 		logger.info("1-------------updateEmployee-----------------------------"+dto);
+426: 		boolean total = employeeService.updateEmployee(dto);
+427: 		BoolResult nr=new BoolResult();
+428: 		nr.setCount(total);
+429: 		nr.setName("updateEmployee");
+430: 		nr.setState("succ");
+431: 		if (!total) {
+432: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+433: 		}
+434: 		return new ResponseEntity<BoolResult>(nr, HttpStatus.OK);
+435: 	}
+436: 	
+437: /*	 실패 -> 원인을 찾자.
+438: 	 http://localhost:8199/humans/api/updateJobHistory
+439: 	  {
+440: 	    "employeeId": 357,
+441:         "hireDate": "2016-08-20",
+442:         "jobId": "IT_PROG",
+443:         "departmantId": 60
+444:     }*/
+445: 	   
+446:     @ApiOperation(value = "  자동(trigger)으로 추가되기 때문에 사용되지 않는다. 원래 put이다.", response = BoolResult.class)
+447: 	@RequestMapping(value = "/updateJobHistory", method = RequestMethod.POST)
+448: 	public ResponseEntity<BoolResult> updateJobHistory(@RequestBody EmployeeDto dto) throws Exception {
+449: 		logger.info("1-------------updateJobHistory-----------------------------"+new Date());
+450: 		logger.info("1-------------updateJobHistory-----------------------------"+dto);
+451: 		boolean total = employeeService.updateJobHistory(dto);
+452: 		BoolResult nr=new BoolResult();
+453: 		nr.setCount(total);
+454: 		nr.setName("updateJobHistory");
+455: 		nr.setState("succ");
+456: 		if (!total) {
+457: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+458: 		}
+459: 		return new ResponseEntity<BoolResult>(nr, HttpStatus.OK);
+460: 	}
+461: 	
+462: /*	http://localhost:8199/humans/api/deleteEmployee/358
+463: 	{
+464:     "name": "deleteEmployee",
+465:     "count": true,
+466:     "state": "true"
+467: }*/
+468: 	 
+469:     @ApiOperation(value = " 해당사원의 정보를 삭제한다. 사원의 정보를 삭제하기전, 정산하고 , 잡히스토리 수정등 여러 작업을 해야한다. 여기서는 히스토리를 모두 지우고(수정한 적이 없다면 바로 삭제가능) 삭제할 수 있다 . 원래 delete다", response = BoolResult.class)
+470: 	@RequestMapping(value = "/deleteEmployee/{employeeId}", method = RequestMethod.POST)
+471: 	public ResponseEntity<BoolResult> deleteEmployee(@PathVariable String employeeId) throws Exception {
+472: 		logger.info("1-------------deleteEmployee-----------------------------"+new Date());
+473: 		logger.info("1-------------deleteEmployee-----------------------------"+employeeId);
+474: 		Map<String, String> map=new HashMap<String, String>();
+475: 		map.put("employeeId", employeeId);
+476: 		boolean total = employeeService.deleteEmployee(map);
+477: 		BoolResult nr=new BoolResult();
+478: 		nr.setCount(total);
+479: 		nr.setName("deleteEmployee");
+480: 		nr.setState("succ");
+481: 		if (!total) {
+482: 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+483: 		}
+484: 		return new ResponseEntity<BoolResult>(nr, HttpStatus.OK);
+485: 	}
+486: 	
+487: 	
+488: }

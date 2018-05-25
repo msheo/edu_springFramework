@@ -1,0 +1,35 @@
+01: package kr.co.infopub.hrm.mapper;
+02: import java.util.List;
+03: import java.util.Map;
+04: import org.apache.ibatis.annotations.Mapper;
+05: 
+06: import kr.co.infopub.hrm.dto.DepCountDto;
+07: import kr.co.infopub.hrm.dto.DepartmentDto;
+08: import kr.co.infopub.hrm.dto.EmployeeDto;
+09: @Mapper
+10: public interface HrmMapper {
+11:  public List<EmployeeDto> findAllEmployees() throws Exception;
+12:  public  List<DepartmentDto> findAllDepartments ()throws Exception;
+13:  public  List<EmployeeDto> findTreeManagerInEmployee ()throws Exception;
+14: 	
+15: 	public List<EmployeeDto> findEmployeesByDepartName(Map<String, String> map)throws Exception;
+16: 	public  int getEmployeesTotal()throws Exception;
+17: 	public  List<DepartmentDto> findAllDepartments2 ()throws Exception;
+18: 	public  List<DepCountDto> findAllDepCounts () throws Exception;
+19: 	
+20: 	public  List<String> findAllJobs ()throws Exception;
+21: 	
+22: 	public  List<EmployeeDto> findEmployeesByManagerId (Map<String, String> map)throws Exception;
+23: 	public  List<EmployeeDto> findEmployeesByEmpId (Map<String, String> map)throws Exception;
+24: 	public  EmployeeDto findEmployeeById (Map<String, String> map)throws Exception;
+25: 	public  List<EmployeeDto> findManagersByName(Map<String, String> map)throws Exception;
+26: 	
+27: 	public  int getTreeMaxLevel ()throws Exception;
+28: 	public int findAfterAdd()throws Exception;
+29: 	
+30: 	public  int addEmployee (EmployeeDto emp)throws Exception;
+31: 	public  boolean updateEmployee(EmployeeDto emp)throws Exception;
+32: 	public  boolean updateJobHistory(EmployeeDto emp)throws Exception;
+33: 	public  boolean deleteEmployee (Map<String, String> map) throws Exception;
+34: 	 
+35: }

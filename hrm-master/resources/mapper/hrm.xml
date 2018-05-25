@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="kr.co.infopub.hrm.mapper.HrmMapper">
+ <select id="findAllEmployees" resultType="kr.co.infopub.hrm.dto.EmployeeDto">
+	SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL,                                
+	NVL(PHONE_NUMBER,'000.0000.0000') PHONE_NUMBER, HIRE_DATE, JOB_ID, NVL(SALARY,0.0) SALARY, 
+	NVL(COMMISSION_PCT,0.0) COMMISSION_PCT,                                         
+	MANAGER_ID, DEPARTMENT_ID FROM EMPLOYEES ORDER BY EMPLOYEE_ID                  
+ </select>
+ <select id="findAllDepartments" resultType="kr.co.infopub.hrm.dto.DepartmentDto">
+	SELECT NVL(E.DEPARTMENT_ID,0) DEPARTMENT_ID, NVL(D.DEPARTMENT_NAME,'NOTYET') DEPARTMENT_NAME 
+    FROM EMPLOYEES E, DEPARTMENTS D          
+    WHERE E.DEPARTMENT_ID=D.DEPARTMENT_ID(+)           
+    GROUP BY E.DEPARTMENT_ID, D.DEPARTMENT_NAME          
+    ORDER BY E.DEPARTMENT_ID                         
+ </select>
+ <select id="findTreeManagerInEmployee" resultType="kr.co.infopub.hrm.dto.EmployeeDto">
+	SELECT   EMPLOYEE_ID,  MANAGER_ID,  FIRST_NAME, LAST_NAME, DEPARTMENT_ID, ORDER2  
+	FROM ( 	SELECT                      
+	    EMPLOYEE_ID, MANAGER_ID, FIRST_NAME, LAST_NAME, DEPARTMENT_ID, LEVEL ,        
+	    SYS_CONNECT_BY_PATH(TO_CHAR(LEVEL,'FM000')||EMPLOYEE_ID,'/') ORDER2             
+		FROM EMPLOYEES    
+		START WITH  MANAGER_ID  IS NULL  CONNECT BY PRIOR  EMPLOYEE_ID = MANAGER_ID   )   
+    ORDER BY ORDER2                
+ </select>
+    
+    <select id="findEmployeesByDepartName"  parameterType="java.util.Map"  resultType="kr.co.infopub.hrm.dto.EmployeeDto">
+		        		SELECT * FROM EMPLOYEES           
+		        		WHERE 1=1 
+					<if test="department_name != '' and department_name != null and department_name != 'NOTYET' and department_name != 'NotYet' " >
+						AND DEPARTMENT_ID =       (SELECT DEPARTMENT_ID FROM DEPARTMENTS WHERE DEPARTMENT_NAME=#{department_name} )        
+						ORDER BY EMPLOYEE_ID   
+					</if>       		
+					<if test="department_name == '' or department_name == null or department_name == 'NOTYET' or department_name == 'NotYet' " >
+						AND DEPARTMENT_ID IS NULL  ORDER BY EMPLOYEE_ID   
+					</if>     		        		 
+    </select>
+    <select id="getEmployeesTotal" resultType="java.lang.Integer">
+    	SELECT COUNT(*) FROM EMPLOYEES
+    </select>
+    <select id="findAllDepartments2" resultType="kr.co.infopub.hrm.dto.DepartmentDto">
+			SELECT  NVL(D.DEPARTMENT_ID,0) DEPARTMENT_ID,         
+			NVL(D.DEPARTMENT_NAME,'NOTYET') DEPARTMENT_NAME        
+			FROM EMPLOYEES E FULL OUTER JOIN  DEPARTMENTS D        
+			ON E.DEPARTMENT_ID=D.DEPARTMENT_ID                     
+			GROUP BY D.DEPARTMENT_ID,D.DEPARTMENT_NAME            
+			ORDER BY D.DEPARTMENT_ID                                                  
+    </select>
+    <select id="findAllDepCounts" resultType="kr.co.infopub.hrm.dto.DepCountDto">
+	        SELECT COUNT(*) COUNT, NVL(E.DEPARTMENT_ID,0) DEPARTMENT_ID,       
+	        NVL(D.DEPARTMENT_NAME,'NOTYET') DEPARTMENT_NAME            
+	        FROM EMPLOYEES E, DEPARTMENTS D                                  
+	        WHERE E.DEPARTMENT_ID=D.DEPARTMENT_ID(+)                           
+	        GROUP BY E.DEPARTMENT_ID, D.DEPARTMENT_NAME                        
+	        ORDER BY COUNT DESC,E.DEPARTMENT_ID ASC                                                          
+    </select>
+
+    <select id="getTreeMaxLevel" resultType="java.lang.Integer">
+    		SELECT MAX(LEVEL)   FROM EMPLOYEES                        
+	        START WITH  MANAGER_ID  IS NULL      
+	        CONNECT BY PRIOR  EMPLOYEE_ID = MANAGER_ID
+    </select>
+    <select id="findEmployeesByManagerId" parameterType="java.util.Map" resultType="kr.co.infopub.hrm.dto.EmployeeDto">
+	   		SELECT 
+		    E.EMPLOYEE_ID EMPLOYEE_ID, D.EMPLOYEE_ID MANAGER_ID,         
+		    E.FIRST_NAME ,                                               
+		    E.LAST_NAME, E.EMAIL, E.PHONE_NUMBER,E.HIRE_DATE             
+		    FROM EMPLOYEES E, EMPLOYEES D                                
+		    WHERE D.EMPLOYEE_ID=E.MANAGER_ID AND E.MANAGER_ID=#{managerId}                  
+    </select>
+    <select id="findAllJobs" resultType="java.lang.String">
+	   		SELECT JOB_ID, JOB_TITLE FROM JOBS                 
+    </select>
+    <select id="findEmployeesByEmpId" parameterType="java.util.Map" resultType="kr.co.infopub.hrm.dto.EmployeeDto">
+	        SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME,               
+	        EMAIL,PHONE_NUMBER,HIRE_DATE FROM EMPLOYEES              
+	        START WITH  EMPLOYEE_ID=#{employeeId}                                  
+	        CONNECT BY PRIOR EMPLOYEE_ID = MANAGER_ID           
+    </select>
+    <select id="findEmployeeById" parameterType="java.util.Map" resultType="kr.co.infopub.hrm.dto.EmployeeDto">
+	   		SELECT * FROM EMPLOYEES WHERE EMPLOYEE_ID=#{employeeId}                  
+    </select>
+   <select id="findManagersByName" parameterType="java.util.Map" resultType="kr.co.infopub.hrm.dto.EmployeeDto">
+	   	    SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, HIRE_DATE               
+	        FROM EMPLOYEES                                                    
+	        WHERE    (UPPER(LAST_NAME) LIKE '%'||#{lastName}||'%' )            
+	        OR (UPPER(FIRST_NAME) LIKE   '%'||#{firstName}||'%' )         
+	        ORDER BY EMPLOYEE_ID                              
+    </select>
+    
+    <insert id="addEmployee" parameterType="kr.co.infopub.hrm.dto.EmployeeDto" >
+    		INSERT INTO EMPLOYEES	     
+			(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL,      
+			PHONE_NUMBER,  HIRE_DATE, JOB_ID, SALARY,       
+			COMMISSION_PCT,MANAGER_ID,DEPARTMENT_ID )	        
+			VALUES(EMPLOYEES_SEQ.NEXTVAL,#{firstName},#{lastName},#{email},
+			#{phoneNumber},#{hireDate},#{jobId},#{salary},
+			<if test="commissionPct != '' and commissionPct != null and  commissionPct != 0 " >
+				#{commissionPct}
+			</if>       		
+			<if test="commissionPct == '' or commissionPct == null or commissionPct == 0 " >
+				null
+			</if>  
+			,
+			<if test="managerId != '' and managerId != null and  managerId != 0 " >
+				#{managerId}
+			</if>       		
+			<if test="managerId == '' or managerId == null or managerId == 0 " >
+				null
+			</if>  
+			,
+			#{departmantId}) 
+    </insert>
+        <select id="findAfterAdd"  resultType="java.lang.Integer">
+	   		SELECT MAX(EMPLOYEE_ID)  FROM EMPLOYEES            
+    </select>
+    <update id="updateEmployee" parameterType="kr.co.infopub.hrm.dto.EmployeeDto">
+            UPDATE EMPLOYEES   SET                      
+	        FIRST_NAME=#{firstName}, LAST_NAME=#{lastName}  ,  EMAIL= #{email},         
+	        PHONE_NUMBER=#{phoneNumber},    JOB_ID=#{jobId},                                  
+	        SALARY=#{salary},COMMISSION_PCT=#{commissionPct}, 
+	        MANAGER_ID=#{managerId}, DEPARTMENT_ID=#{departmantId}       
+	        WHERE EMPLOYEE_ID=#{employeeId}                                                            
+    </update>
+        <update id="updateJobHistory" parameterType="kr.co.infopub.hrm.dto.EmployeeDto">
+           	UPDATE EMPLOYEES   SET                              
+	        JOB_ID=#{jobId},  DEPARTMENT_ID=#{departmantId}            
+	        WHERE EMPLOYEE_ID=#{employeeId}                                                                                        
+    </update>
+    <delete id="deleteEmployee" parameterType="java.util.Map">
+            DELETE   FROM   EMPLOYEES         
+	        WHERE EMPLOYEE_ID=#{employeeId}     
+    </delete>
+</mapper>
+<!-- [ -->
+<!--     { -->
+<!--         "email": "SMAVRIS", -->
+<!--         "salary": 6500, -->
+<!--         "order2": null, -->
+<!--         "phoneNumber": "515.123.7777", -->
+<!--         "hireDate": "2002-06-07", -->
+<!--         "firstName": "Susan", -->
+<!--         "lastName": "Mavris", -->
+<!--         "jobId": "HR_REP", -->
+<!--         "employeeId": 203, -->
+<!--         "commissionPct": 0, -->
+<!--         "managerId": 101, -->
+<!--         "departmanId": 40 -->
+<!--     } -->
+<!-- ] -->

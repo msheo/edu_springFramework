@@ -1,0 +1,39 @@
+HumanmybatisApplication server 역할
+
+http://localhost:8199/humans/swagger-ui.html
+
+
+
+
+api
+http://localhost:8199/humans/api/findAllEmployees
+
+[
+    {
+        "email": "SKING",
+        "salary": 24000,
+        "order2": null,
+        "jobId": "AD_PRES",
+        "firstName": "Steven",
+        "lastName": "King",
+        "employeeId": 100,
+        "phoneNumber": "515.123.4567",
+        "commissionPct": 0,
+        "managerId": 0,
+        "departmantId": 90,
+        "hireDate": "2003-06-17"
+    },
+    {
+        "email": "NKOCHHAR",
+        "salary": 17000,
+        "order2": null,
+        "jobId": "AD_VP",
+        "firstName": "Neena",
+        "lastName": "Kochhar",
+        "employeeId": 101,
+        "phoneNumber": "515.123.4568",
+        "commissionPct": 0,
+        "managerId": 100,
+        "departmantId": 90,
+        "hireDate": "2005-09-21"
+    },

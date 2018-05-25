@@ -1,0 +1,25 @@
+01: package kr.co.infopub.hrm;
+02: import java.util.List;
+03: import org.junit.Assert;
+04: import org.junit.Test;
+05: import org.junit.runner.RunWith;
+06: import org.springframework.beans.factory.annotation.Autowired;
+07: import org.springframework.boot.test.context.SpringBootTest;
+08: import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+09: import org.springframework.test.context.junit4.SpringRunner;
+10: import kr.co.infopub.hrm.dto.EmployeeDto;
+11: import kr.co.infopub.hrm.service.EmployeeService;
+12: @RunWith(SpringRunner.class)
+13: @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+14: public class ServiceTest3 {
+15:  @Autowired
+16:  private EmployeeService service;
+17:  @Test
+18:  public void test() {
+19:     try {
+20:     	List<EmployeeDto> lists=service.findTreeManagerInEmployee();
+21: 		Assert.assertEquals(127, lists.size());
+22: 	} catch (Exception e) {
+23: 	}
+24:  }
+25: }

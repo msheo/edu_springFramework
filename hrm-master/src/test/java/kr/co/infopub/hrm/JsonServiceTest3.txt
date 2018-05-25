@@ -1,0 +1,31 @@
+01: package kr.co.infopub.hrm;
+02: import java.util.LinkedHashMap;
+03: import java.util.List;
+04: import org.junit.Assert;
+05: import org.junit.Test;
+06: import org.junit.runner.RunWith;
+07: import org.springframework.beans.factory.annotation.Autowired;
+08: import org.springframework.boot.test.context.SpringBootTest;
+09: import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+10: import org.springframework.boot.test.web.client.TestRestTemplate;
+11: import org.springframework.http.HttpStatus;
+12: import org.springframework.http.ResponseEntity;
+13: import org.springframework.test.context.junit4.SpringRunner;
+14: @RunWith(SpringRunner.class)
+15: @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+16: public class JsonServiceTest3 {
+17:  @Autowired
+18:  private TestRestTemplate restTemplate;
+19:  @Test
+20:  public void test() {
+21: 	ResponseEntity<List> res=
+22: 	this.restTemplate.getForEntity("/api/findTreeManagerInEmployee", List.class);
+23: 	List<LinkedHashMap<String, Object>> usersMap =res.getBody();
+24: 	System.out.println(usersMap.get(0));
+25: 	Assert.assertEquals(usersMap.get(0).get("employeeId").toString(),"100");
+26: 	Assert.assertEquals(usersMap.get(0).get("managerId").toString(),"0");
+27: 	Assert.assertEquals(usersMap.get(0).get("firstName"),"Steven");
+28: 	Assert.assertEquals(usersMap.get(0).get("lastName"),"King");
+29: 	Assert.assertEquals(res.getStatusCode(), HttpStatus.OK);
+30:  }
+31: }

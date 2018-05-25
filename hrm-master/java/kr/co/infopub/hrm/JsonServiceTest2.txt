@@ -1,0 +1,30 @@
+01: package kr.co.infopub.hrm;
+02: import java.util.LinkedHashMap;
+03: import java.util.List;
+04: 
+05: import org.junit.Assert;
+06: import org.junit.Test;
+07: import org.junit.runner.RunWith;
+08: import org.springframework.beans.factory.annotation.Autowired;
+09: import org.springframework.boot.test.context.SpringBootTest;
+10: import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+11: import org.springframework.boot.test.web.client.TestRestTemplate;
+12: import org.springframework.http.HttpStatus;
+13: import org.springframework.http.ResponseEntity;
+14: import org.springframework.test.context.junit4.SpringRunner;
+15: @RunWith(SpringRunner.class)
+16: @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+17: public class JsonServiceTest2 {
+18:  @Autowired
+19:  private TestRestTemplate restTemplate;
+20:  @Test
+21:  public void test() {
+22: 	ResponseEntity<List> res=
+23: 	this.restTemplate.getForEntity("/api/findAllDepartments", List.class);
+24: 	List<LinkedHashMap<String, Object>> usersMap =res.getBody();
+25: 	System.out.println(usersMap.get(0));
+26: 	Assert.assertEquals(usersMap.get(0).get("department_id").toString(),"10");
+27: 	Assert.assertEquals(usersMap.get(0).get("department_name"),"Administration");
+28: 	Assert.assertEquals(res.getStatusCode(), HttpStatus.OK);
+29:  }
+30: }
